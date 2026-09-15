@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
-import { View, Text, ScrollView, Pressable, Animated, StyleSheet } from "react-native";
 import { router } from "expo-router";
-import { Colors } from "../../../constants/Colors";
+import { useEffect, useRef } from "react";
+import { Animated, Pressable, ScrollView, Text, View } from "react-native";
+import { quickCategoriesStyles as styles } from "../../../styles/quick-categories";
 
 export const categories = [
   { id: 0, name: "All", icon: "⭐" },
@@ -70,49 +70,3 @@ const QuickCategories = () => {
 }
 
 export default QuickCategories
-
-
-const styles = StyleSheet.create({
-  section: {
-    paddingVertical: 16,
-  },
-  heading: {
-    fontSize: 18,
-    fontWeight: "700",
-    marginBottom: 12,
-    paddingHorizontal: 16,
-  },
-  categoriesWrapper: {
-    flexDirection: "row",
-    gap: 12,
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-  },
-  categoryItem: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconBox: {
-    width: 64,
-    height: 64,
-    backgroundColor: "#f2f2f2",
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 3, // shadow for Android
-    shadowColor: "#000", // iOS shadow
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-  },
-  iconText: {
-    fontSize: 32,
-    fontWeight: "bold"
-  },
-  categoryLabel: {
-    fontSize: 12,
-    fontWeight: "500",
-    marginTop: 6,
-    textAlign: "center",
-  },
-});

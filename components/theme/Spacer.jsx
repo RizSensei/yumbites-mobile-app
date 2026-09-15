@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
 
 const Spacer = ({ height =40, width = "100%" }) => {

@@ -1,77 +1,77 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useRouter } from "expo-router";
-import { useEffect } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
+import { useEffect, useRef } from "react";
+import { Animated, Easing, View } from "react-native";
 import LandingBackground from "../components/pages/entry/LandingBackground";
-import { Spacer, ThemedText } from "../components/theme";
+import { ThemedText } from "../components/theme";
+import { indexStyles as styles } from "../styles/index";
 
 const Home = () => {
   const router = useRouter();
+  const fade = useRef(new Animated.Value(0)).current;
+  const slide = useRef(new Animated.Value(16)).current;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      router.replace('/home'); // Or '/onboarding' if you have one
-    }, 3000); // Consider 3 seconds for better UX
+    Animated.parallel([
+      Animated.timing(fade, {
+        toValue: 1,
+        duration: 700,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }),
+      Animated.timing(slide, {
+        toValue: 0,
+        duration: 700,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }),
+    ]).start();
 
-    return () => clearTimeout(timer);
-  }, []);
+    const timer = setTimeout(() => {
+      router.replace('/home');
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+      fade.stopAnimation();
+      slide.stopAnimation();
+    };
+  }, [fade, router, slide]);
 
   return (
     <View style={styles.fullContainer}>
       <LandingBackground />
-      <View style={styles.contentContainer}>
-        {/* Logo/App Name with animation */}
-        <ThemedText style={styles.appName}>YumBites</ThemedText>
-        <ThemedText style={styles.tagline}>Discover Delicious Moments</ThemedText>
-        
-        <Spacer height={40} />
-        
-        {/* Animated Food Icon (Optional) */}
-        <Ionicons name="fast-food-outline" size={60} color="#fff" />
-        
-        <Spacer height={40} />
-        
-        {/* Loading Indicator with text */}
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#fff" />
-          <ThemedText style={styles.loadingText}>Loading delicious content...</ThemedText>
+      <Animated.View
+        style={[
+          styles.contentContainer,
+          { opacity: fade, transform: [{ translateY: slide }] },
+        ]}
+      >
+        <ThemedText style={styles.topLabel}>Good food, on its way</ThemedText>
+
+        <View style={styles.brandBlock}>
+          <View style={styles.mark}>
+            <View style={styles.markInner}>
+              <Ionicons name="fast-food" size={34} color="#6849a7" />
+            </View>
+          </View>
+          <ThemedText style={styles.appName}>YumBites</ThemedText>
+          <ThemedText style={styles.tagline}>Discover delicious moments</ThemedText>
         </View>
-      </View>
+
+        <View style={styles.bottomBlock}>
+          <View style={styles.loadingHeader}>
+            <ThemedText style={styles.loadingText}>Preparing your table</ThemedText>
+            <ThemedText style={styles.loadingPercent}>72%</ThemedText>
+          </View>
+          <View style={styles.progressTrack}>
+            <View style={styles.progressFill} />
+          </View>
+          <ThemedText style={styles.footerText}>Fresh picks. Fast delivery. Zero fuss.</ThemedText>
+        </View>
+      </Animated.View>
     </View>
   );
 };
 
 export default Home;
-
-const styles = StyleSheet.create({
-  fullContainer: {
-    flex: 1,
-  },
-  contentContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  appName: {
-    fontSize: 42,
-    fontWeight: 'bold',
-    color: '#fff',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
-  },
-  tagline: {
-    fontSize: 18,
-    color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: 10,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 15,
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
-  }
-});

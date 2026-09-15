@@ -1,5 +1,4 @@
-import { ThemedView, ThemedText } from '../../components/theme'
-import React from 'react'
+import { ThemedText, ThemedView } from '../../components/theme'
 
 const DeliveryCharge = () => {
   return (

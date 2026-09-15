@@ -1,7 +1,6 @@
-import React from 'react';
-import { TextInput, View, Text, StyleSheet } from 'react-native';
-import { useColorScheme } from 'react-native';
+import { Text, TextInput, useColorScheme, View } from 'react-native';
 import { Colors } from '../constants/Colors';
+import { inputStyles as styles } from '../styles/input';
 
 const Input = ({
   label,
@@ -37,28 +36,6 @@ const Input = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  input: {
-    height: 50,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    fontSize: 16,
-  },
-  errorText: {
-    color: Colors.warning,
-    fontSize: 12,
-    marginTop: 4,
-  },
-});
 
 export default Input;
 

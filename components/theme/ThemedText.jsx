@@ -1,7 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Colors } from '../../constants/Colors'
-import { useColorScheme } from 'react-native'
+import { Text, useColorScheme } from 'react-native';
+import { Colors } from '../../constants/Colors';
 
 
 const ThemedText = ({ children, style }) => {

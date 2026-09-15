@@ -1,7 +1,6 @@
-import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { View } from "react-native";
+import { landingBackgroundStyles as styles } from "../../../styles/landing-background";
 
 const LandingBackground = () => {
   return (
@@ -22,51 +21,11 @@ const LandingBackground = () => {
     >
 
       {/* Animated glow effects */}
-      <View style={styles.glowEffect1} />
-      <View style={styles.glowEffect2} />
-      <View style={styles.glowEffect3} />
+      <View style={styles.lightBandTop} />
+      <View style={styles.lightBandBottom} />
+      <View style={styles.frameLine} />
     </LinearGradient>
   );
 };
 
 export default LandingBackground;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    minHeight: Dimensions.get("window").height * 0.7,
-    position: "relative",
-    overflow: "hidden",
-  },
-  glowEffect1: {
-    position: "absolute",
-    top: "10%",
-    right: "-10%",
-    width: 200,
-    height: 200,
-    backgroundColor: "rgba(104, 73, 167, 0.3)",
-    borderRadius: 100,
-    shadowColor: "#6849a7"
-  },
-  glowEffect2: {
-    position: "absolute",
-    bottom: "-5%",
-    left: "-5%",
-    width: 150,
-    height: 150,
-    backgroundColor: "rgba(184, 166, 219, 0.2)",
-    borderRadius: 75,
-    shadowColor: "#6849a7"
-  },
-  glowEffect3: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: [{ translateX: -75 }, { translateY: -75 }],
-    width: 150,
-    height: 150,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: 75,
-    shadowColor: "#6849a7"
-  },
-});

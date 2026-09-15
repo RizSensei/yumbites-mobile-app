@@ -1,11 +1,12 @@
 import React from "react";
-import { RefreshControl, ScrollView, StyleSheet } from "react-native";
+import { RefreshControl, ScrollView } from "react-native";
 import HeroSection from "../../components/pages/home/HeroSection";
 import PopularSection from "../../components/pages/home/PopularSection";
+import PromoBanner from "../../components/pages/home/PromoBanner";
 import QuickCategories from "../../components/pages/home/QuickCategories";
 import TopSection from "../../components/pages/home/TopSection";
-import PromoBanner from "../../components/pages/home/PromoBanner";
-import { Spacer, ThemedView } from "../../components/theme";
+import { ThemedView } from "../../components/theme";
+import { homeStyles as styles } from "../../styles/home";
 
 const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -41,10 +42,3 @@ const Home = () => {
 };
 
 export default Home;
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingBottom: 0,
-  },
-});
