@@ -47,7 +47,6 @@ const Home = () => {
           { opacity: fade, transform: [{ translateY: slide }] },
         ]}
       >
-        <ThemedText style={styles.topLabel}>Good food, on its way</ThemedText>
 
         <View style={styles.brandBlock}>
           <View style={styles.mark}>
@@ -57,17 +56,6 @@ const Home = () => {
           </View>
           <ThemedText style={styles.appName}>YumBites</ThemedText>
           <ThemedText style={styles.tagline}>Discover delicious moments</ThemedText>
-        </View>
-
-        <View style={styles.bottomBlock}>
-          <View style={styles.loadingHeader}>
-            <ThemedText style={styles.loadingText}>Preparing your table</ThemedText>
-            <ThemedText style={styles.loadingPercent}>72%</ThemedText>
-          </View>
-          <View style={styles.progressTrack}>
-            <View style={styles.progressFill} />
-          </View>
-          <ThemedText style={styles.footerText}>Fresh picks. Fast delivery. Zero fuss.</ThemedText>
         </View>
       </Animated.View>
     </View>

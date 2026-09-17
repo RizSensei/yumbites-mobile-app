@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from 'expo-router';
 import {
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -138,7 +139,7 @@ const Profile = () => {
         <View style={styles.content}>
           {/* Login/Signup Card */}
           {!isLoggedIn && (
-            <View style={styles.loginCard}>
+            <Pressable style={styles.loginCard} onPress={handleLogin}>
               <View style={styles.loginCardContent}>
                 <Ionicons name="log-in-outline" size={32} color={Colors.primary} />
                 <View style={styles.loginTextContainer}>
@@ -148,12 +149,7 @@ const Profile = () => {
                   </ThemedText>
                 </View>
               </View>
-              <Button
-                title="Sign In / Sign Up"
-                onPress={handleLogin}
-                style={styles.loginButton}
-              />
-            </View>
+            </Pressable>
           )}
 
           {/* Quick Actions */}

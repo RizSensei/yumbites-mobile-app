@@ -153,6 +153,8 @@ export const profileStyles = StyleSheet.create({
   },
   loginButton: {
     borderRadius: 12,
+    color: '#666',
+backgroundColor: '#0fff',
   },
   quickActions: {
     flexDirection: 'row',

@@ -9,7 +9,7 @@ export const indexStyles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'space-between',
     paddingHorizontal: 28,
-    paddingTop: 72,
+    paddingTop: 5,
     paddingBottom: 42,
   },
   topLabel: {
@@ -21,7 +21,7 @@ export const indexStyles = StyleSheet.create({
   },
   brandBlock: {
     alignItems: 'center',
-    marginTop: 24,
+    marginTop: 72,
   },
   mark: {
     width: 88,

@@ -15,7 +15,7 @@ export const orderHistoryStyles = StyleSheet.create({
   restaurantDeliveryText: { fontSize: 13, color: Colors.primary, marginLeft: 4, fontWeight: '500' },
   sectionTitle: { fontSize: 24, fontWeight: 'bold', color: Colors.primary, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 4 },
   sectionSubtitle: { fontSize: 14, color: '#666', paddingHorizontal: 20, paddingBottom: 16 },
-  filterContainer: { marginBottom: 2 },
+  filterContainer: { marginBottom: 32 },
   filterContent: { paddingHorizontal: 20 },
   filterButton: { flexDirection: 'row', alignItems: 'center', height: 32, paddingHorizontal: 16, paddingVertical: 0, borderRadius: 20, backgroundColor: '#f8f9fa', marginRight: 10 },
   activeFilterButton: { backgroundColor: Colors.primary },

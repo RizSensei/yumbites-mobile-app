@@ -371,6 +371,7 @@ const OrderHistory = () => {
       <ThemedText style={styles.sectionSubtitle}>Past orders from {restaurantInfo.name}</ThemedText>
 
       {/* Filter Tabs */}
+      <View>
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
@@ -406,6 +407,7 @@ const OrderHistory = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      </View>
 
       {/* Orders List */}
       <ScrollView

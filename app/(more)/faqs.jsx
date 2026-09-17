@@ -12,7 +12,7 @@ import {
   TextInput,
   TouchableOpacity,
   UIManager,
-  View
+  View,
 } from "react-native";
 import { ThemedView } from "../../components/theme";
 import { faqsStyles as styles } from "../../styles/faqs";
@@ -365,38 +365,42 @@ const Faqs = () => {
       {activeTab === "faq" ? (
         <>
           {/* Categories */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
-            {categories.map((category) => (
-              <Pressable
-                key={category.id}
-                style={[
-                  styles.categoryButton,
-                  selectedCategory === category.id &&
-                    styles.categoryButtonActive,
-                ]}
-                onPress={() => setSelectedCategory(category.id)}
-              >
-                <Ionicons
-                  name={category.icon}
-                  size={18}
-                  color={selectedCategory === category.id ? "#fff" : "#6849a7"}
-                />
-                <Text
+          <View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.categoriesScroll}
+            >
+              {categories.map((category) => (
+                <Pressable
+                  key={category.id}
                   style={[
-                    styles.categoryButtonText,
+                    styles.categoryButton,
                     selectedCategory === category.id &&
-                      styles.categoryButtonTextActive,
+                      styles.categoryButtonActive,
                   ]}
+                  onPress={() => setSelectedCategory(category.id)}
                 >
-                  {category.label}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-
+                  <Ionicons
+                    name={category.icon}
+                    size={18}
+                    color={
+                      selectedCategory === category.id ? "#fff" : "#6849a7"
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.categoryButtonText,
+                      selectedCategory === category.id &&
+                        styles.categoryButtonTextActive,
+                    ]}
+                  >
+                    {category.label}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
           {/* Controls */}
           <View style={styles.controlsContainer}>
             <Text style={styles.resultsText}>
@@ -432,7 +436,7 @@ const Faqs = () => {
             showsVerticalScrollIndicator={false}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
+              { useNativeDriver: true },
             )}
             scrollEventThrottle={16}
           >
@@ -523,7 +527,7 @@ const Faqs = () => {
                 <Ionicons name="chevron-forward" size={20} color="#666" />
               </TouchableOpacity>
 
-              {/* Email */} 
+              {/* Email */}
               <TouchableOpacity style={styles.contactMethod}>
                 <LinearGradient
                   colors={["#6849a7", "#987dc9"]}

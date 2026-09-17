@@ -55,7 +55,7 @@ export const menuStyles = StyleSheet.create({
   resultsCount: { fontSize: 14, color: '#666' },
   sortButton: { flexDirection: 'row', alignItems: 'center' },
   sortText: { marginLeft: 4, color: '#6849a7', fontSize: 14, fontWeight: '500' },
-  menuList: { padding: 16, paddingBottom: 100 },
+  menuList: { padding: 16, marginBottom: 32 },
   menuItem: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, marginBottom: 16, overflow: 'hidden', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
   menuItemImage: { width: 100, height: 120 },
   menuItemContent: { flex: 1, padding: 12 },

@@ -406,6 +406,7 @@ const MyReviews = () => {
       </View>
 
       {/* Filter Tabs */}
+      <View>
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
@@ -458,6 +459,7 @@ const MyReviews = () => {
           );
         })}
       </ScrollView>
+      </View>
 
       {/* Sort Options */}
       <View style={styles.sortContainer}>

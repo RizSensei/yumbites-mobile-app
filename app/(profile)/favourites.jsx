@@ -442,35 +442,38 @@ const Favorites = () => {
       </View>
 
       {/* Category Filters */}
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriesContainer}
-        contentContainerStyle={styles.categoriesContent}
-      >
-        {categoryOptions.map((category) => (
-          <TouchableOpacity
-            key={category.id}
-            style={[
-              styles.categoryButton,
-              activeCategory === category.id && styles.activeCategoryButton,
-            ]}
-            onPress={() => setActiveCategory(category.id)}
-          >
-            <Ionicons 
-              name={category.icon} 
-              size={18} 
-              color={activeCategory === category.id ? '#fff' : Colors.primary} 
-            />
-            <ThemedText style={[
-              styles.categoryText,
-              activeCategory === category.id && styles.activeCategoryText,
-            ]}>
-              {category.label}
-            </ThemedText>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      
+      <View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.categoriesContainer}
+          contentContainerStyle={styles.categoriesContent}
+        >
+          {categoryOptions.map((category) => (
+            <TouchableOpacity
+              key={category.id}
+              style={[
+                styles.categoryButton,
+                activeCategory === category.id && styles.activeCategoryButton,
+              ]}
+              onPress={() => setActiveCategory(category.id)}
+            >
+              <Ionicons
+                name={category.icon}
+                size={18}
+                color={activeCategory === category.id ? '#fff' : Colors.primary}
+              />
+              <ThemedText style={[
+                styles.categoryText,
+                activeCategory === category.id && styles.activeCategoryText,
+              ]}>
+                {category.label}
+              </ThemedText>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* Sort Options */}
       <View style={styles.sortContainer}>
