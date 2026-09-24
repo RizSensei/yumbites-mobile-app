@@ -2,16 +2,9 @@ import { router } from "expo-router";
 import { useEffect, useRef } from "react";
 import { Animated, Pressable, ScrollView, Text, View } from "react-native";
 import { quickCategoriesStyles as styles } from "../../../styles/quick-categories";
+import { useFoodCategories } from "../../../hooks/useCategories";
 
-export const categories = [
-  { id: 0, name: "All", icon: "⭐" },
-  { id: 1, name: "Pizza", icon: "🍕" },
-  { id: 2, name: "Burgers", icon: "🍔" },
-  { id: 3, name: "Drinks", icon: "🥤" },
-  { id: 4, name: "Desserts", icon: "🍰" },
-  { id: 5, name: "Salads", icon: "🥗" },
-  { id: 6, name: "Sushi", icon: "🍣" },
-];
+const categoryIcons = ["🍕", "🍔", "🥤", "🍰", "🥗", "🍣"];
 
 // Fade-in animation wrapper
 const FadeInItem = ({ index, children }) => {
@@ -44,13 +37,19 @@ const FadeInItem = ({ index, children }) => {
 };
 
 const QuickCategories = () => {
+  const { data } = useFoodCategories();
+  const categories = (Array.isArray(data) ? data : data?.categories ?? []).map((category, index) => ({
+    ...category,
+    icon: category.icon || categoryIcons[index % categoryIcons.length],
+  }));
+
   return (
     <View style={styles.section}>
       <Text style={styles.heading}>Categories</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.categoriesWrapper}>
-          {categories.slice(1).map((category, index) => (
+          {categories.map((category, index) => (
             <FadeInItem key={category.id} index={index}>
               <Pressable
                 onPress={() => router.push("/menu")}

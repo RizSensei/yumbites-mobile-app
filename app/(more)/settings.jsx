@@ -11,9 +11,11 @@ import {
 import { Spacer, ThemedText, ThemedView } from "../../components/theme";
 import { Colors } from "../../constants/Colors";
 import { settingsStyles as styles } from "../../styles/settings";
+import { useAuth } from '../../contexts/auth-context';
 
 const Settings = () => {
   const router = useRouter();
+  const { logout } = useAuth();
 
   // Settings states
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -57,8 +59,8 @@ const Settings = () => {
       {
         text: "Logout",
         style: "destructive",
-        onPress: () => {
-          // Handle logout logic here
+        onPress: async () => {
+          await logout();
           router.replace("/login");
         },
       },

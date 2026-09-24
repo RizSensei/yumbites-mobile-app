@@ -13,6 +13,7 @@ import Input from '../../components/Input';
 import { Spacer, ThemedText, ThemedView } from '../../components/theme';
 import { Colors } from '../../constants/Colors';
 import { loginStyles as styles } from '../../styles/login';
+import { useAuth } from '../../contexts/auth-context';
 
 const Login = () => {
   const {
@@ -28,19 +29,13 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   const onSubmit = async (data) => {
     try {
-      console.log('Login data:', data);
-      // TODO: Implement login API call
-      // Example: await loginUser(data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // On success
+      await login(data);
       Alert.alert('Success', 'Logged in successfully!');
-      router.replace('/home');
+      router.replace('/(dashboard)/home');
     } catch (error) {
       console.error('Login error:', error);
       Alert.alert('Error', 'Invalid email or password');

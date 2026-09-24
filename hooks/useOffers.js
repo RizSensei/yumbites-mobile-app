@@ -1,4 +1,4 @@
-import { offersApi } from '@/services/api';
+import { offersApi } from '../services/api';
 import { useQuery } from '@tanstack/react-query';
 
 export const offerQueryKeys = {

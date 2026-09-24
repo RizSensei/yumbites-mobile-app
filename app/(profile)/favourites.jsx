@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image,
   RefreshControl,
@@ -12,6 +12,7 @@ import Button from '../../components/Button';
 import { Spacer, ThemedText, ThemedView } from '../../components/theme';
 import { Colors } from '../../constants/Colors';
 import { favouritesStyles as styles } from '../../styles/favourites';
+import { useFavouriteDishesQuery } from '../../hooks/useAccountQueries';
 
 // Mock favorites data
 const initialFavorites = [
@@ -116,6 +117,11 @@ const Favorites = () => {
   const [sortBy, setSortBy] = useState('recent'); // recent, price-low, price-high, rating
   const [selectedItems, setSelectedItems] = useState([]);
   const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const { data: favouriteData } = useFavouriteDishesQuery();
+
+  useEffect(() => {
+    if (Array.isArray(favouriteData)) setFavorites(favouriteData);
+  }, [favouriteData]);
 
   // Handle refresh
   const onRefresh = () => {

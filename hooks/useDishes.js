@@ -1,5 +1,7 @@
-import { dishesApi } from '@/services/api';
+import { dishesApi } from '../services/api';
 import { useQuery } from '@tanstack/react-query';
+
+const responseData = (response) => response?.data?.data ?? response?.data;
 
 export const dishQueryKeys = {
     all: ['dishes'],
@@ -11,6 +13,6 @@ export const dishQueryKeys = {
 export const useDishes = () => {
     return useQuery({
         queryKey: dishQueryKeys.lists(),
-        queryFn: () => dishesApi.getAll(),
+        queryFn: async () => responseData(await dishesApi.getAll()),
     });
 };

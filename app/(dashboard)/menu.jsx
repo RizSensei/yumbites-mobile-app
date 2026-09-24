@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import {
+  Alert,
   Animated,
   Image,
   Modal,
@@ -15,131 +16,23 @@ import {
 } from 'react-native';
 import { ThemedView } from '../../components/theme';
 import { menuStyles as styles } from '../../styles/menu';
+import { useDishes } from '../../hooks/useDishes';
+import { useFoodCategories } from '../../hooks/useCategories';
+import { useCartMutation } from '../../hooks/useAccountQueries';
+import { cartApi } from '../../services/api';
 
-// Menu data
-const menuItems = [
-  {
-    id: 1,
-    name: 'Margherita Pizza',
-    description: 'Classic pizza with tomato, mozzarella & basil',
-    price: 12.99,
-    image: 'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=400&h=300&fit=crop',
-    category: 'Pizza',
-    rating: 4.8,
-    prepTime: '20-25 min',
-    isVegetarian: true,
-  },
-  {
-    id: 2,
-    name: 'Pepperoni Pizza',
-    description: 'Spicy pepperoni with mozzarella cheese',
-    price: 14.99,
-    image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&h=300&fit=crop',
-    category: 'Pizza',
-    rating: 4.7,
-    prepTime: '25-30 min',
-    isVegetarian: false,
-  },
-  {
-    id: 3,
-    name: 'BBQ Chicken Pizza',
-    description: 'Grilled chicken with BBQ sauce and red onions',
-    price: 16.99,
-    image: 'https://images.unsplash.com/photo-1595708684082-a173bb3a06c5?w=400&h=300&fit=crop',
-    category: 'Pizza',
-    rating: 4.6,
-    prepTime: '30-35 min',
-    isVegetarian: false,
-  },
-  {
-    id: 4,
-    name: 'Classic Cheeseburger',
-    description: 'Juicy beef patty with cheddar, lettuce & tomato',
-    price: 10.5,
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w-400&h=300&fit=crop',
-    category: 'Burgers',
-    rating: 4.5,
-    prepTime: '15-20 min',
-    isVegetarian: false,
-  },
-  {
-    id: 5,
-    name: 'Veggie Burger',
-    description: 'Plant-based patty with fresh vegetables',
-    price: 9.99,
-    image: 'https://images.unsplash.com/photo-1550317138-10000687a72b?w=400&h=300&fit=crop',
-    category: 'Burgers',
-    rating: 4.4,
-    prepTime: '10-15 min',
-    isVegetarian: true,
-  },
-  {
-    id: 6,
-    name: 'Sushi Platter',
-    description: 'Assorted sushi rolls with fresh fish',
-    price: 18.75,
-    image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop',
-    category: 'Sushi',
-    rating: 4.9,
-    prepTime: '30-40 min',
-    isVegetarian: false,
-  },
-  {
-    id: 7,
-    name: 'Caesar Salad',
-    description: 'Romaine, parmesan, croutons & Caesar dressing',
-    price: 9.0,
-    image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop',
-    category: 'Salads',
-    rating: 4.3,
-    prepTime: '10-15 min',
-    isVegetarian: true,
-  },
-  {
-    id: 8,
-    name: 'Chocolate Cake',
-    description: 'Rich chocolate cake with frosting',
-    price: 6.5,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop',
-    category: 'Desserts',
-    rating: 4.8,
-    prepTime: '5-10 min',
-    isVegetarian: true,
-  },
-  {
-    id: 9,
-    name: 'Strawberry Smoothie',
-    description: 'Fresh strawberries blended with yogurt',
-    price: 5.25,
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-    category: 'Drinks',
-    rating: 4.6,
-    prepTime: '5 min',
-    isVegetarian: true,
-  },
-  {
-    id: 10,
-    name: 'Spaghetti Carbonara',
-    description: 'Classic Italian pasta with creamy sauce',
-    price: 13.99,
-    image: 'https://images.unsplash.com/photo-1598866594230-a7c12756260f?w=400&h=300&fit=crop',
-    category: 'Pasta',
-    rating: 4.7,
-    prepTime: '25-30 min',
-    isVegetarian: false,
-  },
-];
+const toArray = (data, key) => (Array.isArray(data) ? data : data?.[key] ?? []);
 
-const categories = [
-  'All',
-  'Pizza',
-  'Burgers',
-  'Sushi',
-  'Salads',
-  'Desserts',
-  'Drinks',
-  'Pasta',
-];
+const normalizeDish = (dish) => ({
+  ...dish,
+  description: dish.description || 'A delicious dish from our menu',
+  price: Number(dish.price ?? 0),
+  category: dish.category?.name || dish.categoryId?.name || dish.category?.id || dish.categoryId?.id || dish.category || dish.categoryId || 'Other',
+  image: dish.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
+  rating: Number(dish.rating || 0),
+  prepTime: dish.prepTime || 'Standard prep',
+  isVegetarian: Boolean(dish.isVegetarian),
+});
 
 const filters = [
   { id: 'vegetarian', label: 'Vegetarian', icon: 'leaf-outline' },
@@ -157,6 +50,11 @@ const Menu = () => {
   
   const scrollY = useRef(new Animated.Value(0)).current;
   const searchRef = useRef(null);
+  const { data: dishData, isLoading: dishesLoading } = useDishes();
+  const { data: categoryData } = useFoodCategories();
+  const addToCartMutation = useCartMutation(cartApi.addItem);
+  const menuItems = toArray(dishData, 'dishes').map(normalizeDish);
+  const categories = ['All', ...toArray(categoryData, 'categories').map(category => category.name)];
 
   // Filter and search logic
   const filteredItems = menuItems.filter(item => {
@@ -221,6 +119,15 @@ const Menu = () => {
     extrapolate: 'clamp',
   });
 
+  const addToCart = async (item) => {
+    try {
+      await addToCartMutation.mutateAsync({ dishId: item.id, quantity: 1 });
+      Alert.alert('Added to cart', `${item.name} was added to your cart.`);
+    } catch (error) {
+      Alert.alert('Unable to add item', error.response?.data?.message || 'Please try again.');
+    }
+  };
+
   const renderMenuItem = ({ item }) => (
     <TouchableOpacity 
       style={styles.menuItem}
@@ -251,8 +158,12 @@ const Menu = () => {
         </View>
         
         <View style={styles.menuItemFooter}>
-          <Text style={styles.menuItemPrice}>${item.price.toFixed(2)}</Text>
-          <TouchableOpacity style={styles.addButton}>
+          <Text style={styles.menuItemPrice}>${Number(item.price || 0).toFixed(2)}</Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => addToCart(item)}
+            disabled={!item.stockAvailable || addToCartMutation.isPending}
+          >
             <Text style={styles.addButtonText}>+ Add</Text>
           </TouchableOpacity>
         </View>
@@ -403,7 +314,7 @@ const Menu = () => {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="fast-food-outline" size={80} color="#ccc" />
-            <Text style={styles.emptyText}>No items found</Text>
+            <Text style={styles.emptyText}>{dishesLoading ? 'Loading menu...' : 'No items found'}</Text>
             <Text style={styles.emptySubtext}>Try adjusting your search or filters</Text>
             <TouchableOpacity style={styles.emptyButton} onPress={clearAllFilters}>
               <Text style={styles.emptyButtonText}>Clear All Filters</Text>

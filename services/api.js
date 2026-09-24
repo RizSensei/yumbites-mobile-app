@@ -1,12 +1,14 @@
-import { apiService, endpoints } from '@/lib/api';
+import { apiService, endpoints } from '../lib/api';
 
 // Authentication API
 export const authApi = {
   login: (credentials) =>
-    apiService.post(endpoints.auth + '/login', { ...credentials }),
+    apiService.post('/api/auth/login', { ...credentials }),
+  register: (data) =>
+    apiService.post('/api/auth/register', { ...data }),
   
   logout: () =>
-    apiService.post(endpoints.auth + '/logout'),
+    apiService.post('/api/auth/logout'),
   
   refreshToken: (refreshToken) =>
     apiService.post(endpoints.auth + '/refresh', { refreshToken }),
@@ -15,7 +17,27 @@ export const authApi = {
 // Profile API
 export const profileApi = {
   getProfile: () =>
-    apiService.get(endpoints.profile + '/me'),
+    apiService.get('/api/profile/me'),
+  changePassword: (data) =>
+    apiService.patch('/api/profile/change-password', data),
+  updateProfile: (data) =>
+    apiService.put('/api/profile/update-profile', data),
+  getFavouriteDishes: () =>
+    apiService.get('/api/profile/get-favourite-dishes'),
+};
+
+export const orderHistoryApi = {
+  getMyOrders: () => apiService.get('/api/orders/my-orders'),
+};
+
+export const cartApi = {
+  get: () => apiService.get('/api/cart'),
+
+  addItem: (data) => apiService.post('/api/cart', data),
+
+  updateItem: (id, data) => apiService.put(`/api/cart/${id}`, { id, ...data }),
+
+  removeItem: (id) => apiService.delete(`/api/cart/${id}`),
 };
 
 // Users API
@@ -55,9 +77,6 @@ export const foodCategoriesApi = {
   
   delete: (id) =>
     apiService.delete(`${endpoints.foodCategories}/${id}`),
-  
-  toggleStatus: (id) =>
-    apiService.patch(`${endpoints.foodCategories}/${id}/toggle-status`),
 };
 
 // Dishes API
@@ -77,11 +96,8 @@ export const dishesApi = {
   delete: (id) =>
     apiService.delete(`${endpoints.dishes}/${id}`),
   
-  toggleStatus: (id, data) =>
+  updateStock: (id, data) =>
     apiService.patch(`${endpoints.dishes}/${id}/stock`, data),
-  
-  getByCategory: (categoryId) =>
-    apiService.get(`${endpoints.dishes}/category/${categoryId}`),
 };
 
 // Dashboard API
@@ -120,6 +136,8 @@ export const offersApi = {
 
 // Orders API
 export const ordersApi = {
+  getMyOrders: () => apiService.get(`${endpoints.orders}/my-orders`),
+
   getAll: (params) =>
     apiService.get(endpoints.orders, params),
   
@@ -128,15 +146,12 @@ export const ordersApi = {
   
   create: (data) =>
     apiService.post(endpoints.orders, { ...data }), 
-  
-  update: (id, data) =>
-    apiService.put(`${endpoints.orders}/${id}`, { ...data }),
-  
-  delete: (id) =>
-    apiService.delete(`${endpoints.orders}/${id}`),
-  
-            updateStatus: (id, status) =>
-    apiService.patch(`${endpoints.orders}/${id}/status`, { status }),
+
+  updateStatus: (id, status) =>
+    apiService.put(`${endpoints.orders}/${id}/status`, { status }),
+
+  cancel: (id) =>
+    apiService.put(`${endpoints.orders}/${id}/cancel`),
 };
 
 // Invoices API

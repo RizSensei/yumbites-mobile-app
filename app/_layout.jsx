@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";
 import { Colors } from "../constants/Colors";
 import QueryProvider from "../providers/query-provider";
+import { AuthProvider } from "../contexts/auth-context";
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();
@@ -11,7 +12,8 @@ const RootLayout = () => {
     <>
       <StatusBar value="auto" />
       <QueryProvider>
-        <Stack
+        <AuthProvider>
+          <Stack
           screenOptions={{
             headerStyle: { backgroundColor: theme.navBackground },
             headerTintColor: theme.text,
@@ -23,7 +25,8 @@ const RootLayout = () => {
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(more)" options={{ headerShown: false }} />
           <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-        </Stack>
+          </Stack>
+        </AuthProvider>
       </QueryProvider>
     </>
   );

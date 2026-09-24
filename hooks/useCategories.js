@@ -1,5 +1,7 @@
-import { foodCategoriesApi } from '@/services/api';
+import { foodCategoriesApi } from '../services/api';
 import { useQuery } from '@tanstack/react-query';
+
+const responseData = (response) => response?.data?.data ?? response?.data;
 
 export const foodCategoryQueryKeys = {
     all: ['food-categories'],
@@ -10,6 +12,6 @@ export const foodCategoryQueryKeys = {
 export const useFoodCategories = () => {
     return useQuery({
         queryKey: foodCategoryQueryKeys.list({ search: '', status: '' }),
-        queryFn: () => foodCategoriesApi.getAll(),
+        queryFn: async () => responseData(await foodCategoriesApi.getAll()),
     });
 };

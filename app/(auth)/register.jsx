@@ -13,6 +13,7 @@ import Input from '../../components/Input';
 import { Spacer, ThemedText, ThemedView } from '../../components/theme';
 import { Colors } from '../../constants/Colors';
 import { registerStyles as styles } from '../../styles/register';
+import { useRegisterMutation } from '../../hooks/useAccountQueries';
 
 const Register = () => {
   const {
@@ -33,19 +34,13 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const password = watch('password');
+  const registerMutation = useRegisterMutation();
 
   const onSubmit = async (data) => {
     try {
-      console.log('Register data:', data);
-      // TODO: Implement register API call
-      // Example: await registerUser(data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // On success
+      await registerMutation.mutateAsync(data);
       Alert.alert('Success', 'Account created successfully!');
-      router.replace('/home');
+      router.replace('/login');
     } catch (error) {
       console.error('Register error:', error);
       Alert.alert('Error', 'Registration failed. Please try again.');

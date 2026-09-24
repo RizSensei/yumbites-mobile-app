@@ -5,6 +5,7 @@ import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import { ThemedText, ThemedView } from '../../../components/theme';
 import { changePasswordStyles as styles } from '../../../styles/change-password';
+import { useChangePasswordMutation } from '../../../hooks/useAccountQueries';
 
 const ChangePassword = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const changePasswordMutation = useChangePasswordMutation();
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
@@ -30,11 +32,16 @@ const ChangePassword = () => {
     }
 
     setIsSaving(true);
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    setIsSaving(false);
-    Alert.alert('Password updated', 'Your password has been changed successfully.', [
-      { text: 'Done', onPress: () => router.back() },
-    ]);
+    try {
+      await changePasswordMutation.mutateAsync({ currentPassword, newPassword, confirmPassword });
+      Alert.alert('Password updated', 'Your password has been changed successfully.', [
+        { text: 'Done', onPress: () => router.back() },
+      ]);
+    } catch (error) {
+      Alert.alert('Unable to update password', error.response?.data?.message || 'Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (

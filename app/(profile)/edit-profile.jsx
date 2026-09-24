@@ -15,6 +15,7 @@ import Button from '../../components/Button';
 import { Spacer, ThemedText, ThemedView } from '../../components/theme';
 import { Colors } from '../../constants/Colors';
 import { editProfileStyles as styles } from '../../styles/edit-profile';
+import { useUpdateProfileMutation } from '../../hooks/useAccountQueries';
 
 const EditProfile = () => {
   // User data state
@@ -32,6 +33,7 @@ const EditProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fieldToEdit, setFieldToEdit] = useState(null);
   const [editValue, setEditValue] = useState('');
+  const updateProfileMutation = useUpdateProfileMutation();
 
   // Request permissions on mount
   useEffect(() => {
@@ -93,11 +95,10 @@ const EditProfile = () => {
     try {
       setIsLoading(true);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Update user data
-      setUserData({ ...formData });
+      const response = await updateProfileMutation.mutateAsync(formData);
+      const updatedUser = response.data?.data ?? response.data ?? formData;
+      setUserData(updatedUser);
+      setFormData(updatedUser);
       
       Alert.alert('Success', 'Profile updated successfully!');
     } catch (error) {

@@ -8,51 +8,7 @@ import {
 } from "react-native";
 import MenuCard from "../../general/MenuCard";
 import { popularSectionStyles as styles } from "../../../styles/popular-section";
-
-export const popularItems = [
-  {
-    id: 1,
-    name: "Margherita Pizza",
-    description: "Classic pizza with tomato, mozzarella & basil",
-    price: 12.99,
-    image: "https://via.placeholder.com/150?text=Pizza",
-  },
-  {
-    id: 2,
-    name: "Cheeseburger",
-    description: "Juicy beef patty with cheddar, lettuce & tomato",
-    price: 10.5,
-    image: "https://via.placeholder.com/150?text=Burger",
-  },
-  {
-    id: 3,
-    name: "Sushi Platter",
-    description: "Assorted sushi rolls with fresh fish",
-    price: 18.75,
-    image: "https://via.placeholder.com/150?text=Sushi",
-  },
-  {
-    id: 4,
-    name: "Caesar Salad",
-    description: "Romaine, parmesan, croutons & Caesar dressing",
-    price: 9.0,
-    image: "https://via.placeholder.com/150?text=Salad",
-  },
-  {
-    id: 5,
-    name: "Chocolate Cake",
-    description: "Rich chocolate cake with frosting",
-    price: 6.5,
-    image: "https://via.placeholder.com/150?text=Cake",
-  },
-  {
-    id: 6,
-    name: "Strawberry Smoothie",
-    description: "Fresh strawberries blended with yogurt",
-    price: 5.25,
-    image: "https://via.placeholder.com/150?text=Smoothie",
-  },
-];
+import { useDishes } from "../../../hooks/useDishes";
 
 const SlideUp = ({ index, children }) => {
   const fade = useRef(new Animated.Value(0)).current;
@@ -85,6 +41,18 @@ const SlideUp = ({ index, children }) => {
 };
 
 const PopularSection = () => {
+  const { data } = useDishes();
+  const popularItems = (Array.isArray(data) ? data : data?.dishes ?? [])
+    .filter(item => item.stockAvailable !== false)
+    .sort((first, second) => Number(second.rating || 0) - Number(first.rating || 0))
+    .slice(0, 6)
+    .map(item => ({
+      ...item,
+      description: item.description || "A delicious dish from our menu",
+      price: Number(item.price || 0),
+      image: item.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop",
+    }));
+
   return (
     <View style={styles.section}>
       {/* Header */}

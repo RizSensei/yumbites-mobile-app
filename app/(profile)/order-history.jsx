@@ -1,6 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import {
+  Alert,
   RefreshControl,
   ScrollView,
   TouchableOpacity,
@@ -10,6 +12,8 @@ import Button from '../../components/Button';
 import { Spacer, ThemedText, ThemedView } from '../../components/theme';
 import { Colors } from '../../constants/Colors';
 import { orderHistoryStyles as styles } from '../../styles/order-history';
+import { useOrderHistoryQuery } from '../../hooks/useAccountQueries';
+import { ordersApi } from '../../services/api';
 
 // Mock order history data from a single restaurant
 const orderHistoryData = [
@@ -113,35 +117,72 @@ const restaurantInfo = {
 // Filter options
 const filterOptions = [
   { id: 'all', label: 'All Orders' },
+  { id: 'pending', label: 'Pending' },
+  { id: 'confirmed', label: 'Confirmed' },
+  { id: 'shipped', label: 'Shipped' },
   { id: 'delivered', label: 'Delivered' },
-  { id: 'preparing', label: 'Preparing' },
   { id: 'cancelled', label: 'Cancelled' },
 ];
 
+const normalizeOrder = (order) => {
+  const status = String(order.status || 'PENDING').toLowerCase();
+  const items = order.items || order.orderItems || [];
+  const statusColors = {
+    delivered: '#06D6A0',
+    cancelled: '#FF6B6B',
+    shipped: '#118AB2',
+    pending: '#FFD166',
+    confirmed: '#FFD166',
+  };
+
+  return {
+    ...order,
+    id: order.id || order.orderId,
+    date: order.createdAt ? new Date(order.createdAt).toLocaleString() : 'Recent order',
+    items: items.map(item => ({
+      ...item,
+      name: item.dish?.name || item.name || 'Dish',
+      quantity: Number(item.quantity || 0),
+      price: Number(item.price || 0),
+    })),
+    total: Number(order.total ?? order.totalAmount ?? 0),
+    status,
+    statusColor: statusColors[status] || Colors.primary,
+    deliveryAddress: order.deliveryAddress || 'Not provided',
+    deliveryTime: order.deliveryTime || 'Not available',
+    paymentMethod: order.paymentMethod || 'Not available',
+  };
+};
+
 const OrderHistory = () => {
-  const [orders, setOrders] = useState(orderHistoryData);
+  const [orders, setOrders] = useState([]);
+  const [allOrders, setAllOrders] = useState([]);
   const [activeFilter, setActiveFilter] = useState('all');
   const [refreshing, setRefreshing] = useState(false);
   const [expandedOrder, setExpandedOrder] = useState(null);
+  const { data: orderData, refetch } = useOrderHistoryQuery();
+  const cancelOrderMutation = useMutation({ mutationFn: ordersApi.cancel });
+
+  useEffect(() => {
+    if (Array.isArray(orderData)) setAllOrders(orderData.map(normalizeOrder));
+  }, [orderData]);
+
+  useEffect(() => {
+    setOrders(activeFilter === 'all'
+      ? allOrders
+      : allOrders.filter(order => order.status === activeFilter));
+  }, [activeFilter, allOrders]);
 
   // Handle refresh
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1500);
+    await refetch();
+    setRefreshing(false);
   };
 
   // Handle filter change
   const handleFilterChange = (filterId) => {
     setActiveFilter(filterId);
-    if (filterId === 'all') {
-      setOrders(orderHistoryData);
-    } else {
-      const filtered = orderHistoryData.filter(order => order.status === filterId);
-      setOrders(filtered);
-    }
   };
 
   // Toggle order details
@@ -171,6 +212,13 @@ const OrderHistory = () => {
     // Navigate to help/contact support
   };
 
+  const handleCancel = (order) => {
+    cancelOrderMutation.mutate(order.id, {
+      onSuccess: () => refetch(),
+      onError: (error) => Alert.alert('Unable to cancel order', error.response?.data?.message || 'Please try again.'),
+    });
+  };
+
   // Get status icon
   const getStatusIcon = (status) => {
     switch (status) {
@@ -189,14 +237,14 @@ const OrderHistory = () => {
 
   // Get order count by status
   const getOrderCount = (status) => {
-    if (status === 'all') return orderHistoryData.length;
-    return orderHistoryData.filter(order => order.status === status).length;
+    if (status === 'all') return allOrders.length;
+    return allOrders.filter(order => order.status === status).length;
   };
 
   // Calculate popular items
   const getPopularItems = () => {
     const itemCount = {};
-    orderHistoryData.forEach(order => {
+    allOrders.forEach(order => {
       order.items.forEach(item => {
         if (itemCount[item.name]) {
           itemCount[item.name] += item.quantity;
@@ -296,7 +344,7 @@ const OrderHistory = () => {
                     <ThemedText style={styles.itemName}>{item.name}</ThemedText>
                     <ThemedText style={styles.itemQuantity}>x{item.quantity}</ThemedText>
                   </View>
-                  <ThemedText style={styles.itemPrice}>${(item.price * item.quantity).toFixed(2)}</ThemedText>
+                  <ThemedText style={styles.itemPrice}>${item.price.toFixed(2)}</ThemedText>
                 </View>
               ))}
             </View>
@@ -330,6 +378,16 @@ const OrderHistory = () => {
 
             {/* Action Buttons */}
             <View style={styles.actionButtons}>
+              {(order.status === 'pending' || order.status === 'confirmed') && (
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => handleCancel(order)}
+                >
+                  <Ionicons name="close-circle-outline" size={18} color="#FF6B6B" />
+                  <ThemedText style={styles.actionButtonText}>Cancel Order</ThemedText>
+                </TouchableOpacity>
+              )}
+
               {order.status === 'delivered' && !order.rating && (
                 <TouchableOpacity 
                   style={styles.actionButton}
@@ -453,20 +511,20 @@ const OrderHistory = () => {
             {/* Stats Card */}
             <View style={styles.statsCard}>
               <View style={styles.statItem}>
-                <ThemedText style={styles.statNumber}>{orderHistoryData.length}</ThemedText>
+                <ThemedText style={styles.statNumber}>{allOrders.length}</ThemedText>
                 <ThemedText style={styles.statLabel}>Total Orders</ThemedText>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.statItem}>
                 <ThemedText style={styles.statNumber}>
-                  ${orderHistoryData.reduce((total, order) => total + order.total, 0).toFixed(2)}
+                  ${allOrders.reduce((total, order) => total + order.total, 0).toFixed(2)}
                 </ThemedText>
                 <ThemedText style={styles.statLabel}>Total Spent</ThemedText>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.statItem}>
                 <ThemedText style={styles.statNumber}>
-                  {orderHistoryData.filter(o => o.rating).length}
+                  {allOrders.filter(o => o.rating).length}
                 </ThemedText>
                 <ThemedText style={styles.statLabel}>Rated Orders</ThemedText>
               </View>

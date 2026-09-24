@@ -1,7 +1,8 @@
 'use client';
 
-import { authApi, profileApi } from '@/services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { profileApi } from '../services/api';
+import { useLoginMutation, useLogoutMutation, useMeQuery } from '../hooks/useAccountQueries';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext(undefined);
@@ -15,12 +16,15 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+  const loginMutation = useLoginMutation();
+  const logoutMutation = useLogoutMutation();
   const [authState, setAuthState] = useState({
     user: null,
     token: null,
     isAuthenticated: false,
     isLoading: true
   });
+  const meQuery = useMeQuery(Boolean(authState.token));
 
   const refreshAuth = async () => { 
     try {
@@ -30,7 +34,7 @@ export function AuthProvider({ children }) {
       }
 
       const response = await profileApi.getProfile();
-      const user = response.data;
+      const user = response.data?.data ?? response.data;
       
       setAuthState({
         user,
@@ -39,46 +43,31 @@ export function AuthProvider({ children }) {
         isLoading: false,
       });
     } catch (error) {
-      // Token is invalid, clear everything
+      await AsyncStorage.multiRemove(['token', 'userData']);
+      setAuthState({ user: null, token: null, isAuthenticated: false, isLoading: false });
     }
   };
 
-  useEffect(async () => {
-    // Check for existing token on app load
-    const token = await AsyncStorage.getItem('token');
-    const userData = await AsyncStorage.getItem('userData');
-    
-    if (token && userData) {
-      try {
-        const user = JSON.parse(userData);
-        setAuthState({
-          user,
-          token,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-        
-        // Verify token is still valid by fetching profile
-        refreshAuth().catch(() => {
-          // If refresh fails, user will be logged out
-        });
-      } catch (error) {
-
-      }
-    } else {
-      setAuthState(prev => ({ ...prev, isLoading: false }));
-    }
+  useEffect(() => {
+    refreshAuth();
   }, []);
+
+  useEffect(() => {
+    if (meQuery.data) {
+      setAuthState((previous) => ({ ...previous, user: meQuery.data, isAuthenticated: true, isLoading: false }));
+      AsyncStorage.setItem('userData', JSON.stringify(meQuery.data));
+    }
+  }, [meQuery.data]);
 
   const login = async (credentials) => {
     try {
       setAuthState(prev => ({ ...prev, isLoading: true }));
       
-      const response = await authApi.login(credentials);
-      const { user, token } = response.data.data;
+      const response = await loginMutation.mutateAsync(credentials);
+      const { user, token } = response.data?.data ?? response.data;
       
       // Extract the actual token (remove "Bearer " prefix if it exists)
-      const cleanToken = token.startsWith('Bearer ') ? token.substring(7) : token;
+      const cleanToken = token?.startsWith('Bearer ') ? token.substring(7) : token;
       
       // Store in localStorage
       await AsyncStorage.setItem('token', cleanToken);
@@ -86,7 +75,7 @@ export function AuthProvider({ children }) {
       
       setAuthState({
         user,
-        token,
+        token: cleanToken,
         isAuthenticated: true,
         isLoading: false,
       });
@@ -97,9 +86,11 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    // Clear localStorage
-    await AsyncStorage.removeItem('token');
-    await AsyncStorage.removeItem('userData');
+    try {
+      await logoutMutation.mutateAsync();
+    } finally {
+      await AsyncStorage.multiRemove(['token', 'userData']);
+    }
     
     setAuthState({
       user: null,
