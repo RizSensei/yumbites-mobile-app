@@ -68,7 +68,7 @@ const SavedAddresses = () => {
                   <Ionicons
                     name={address.label === 'Home' ? 'home-outline' : 'briefcase-outline'}
                     size={22}
-                    color={Colors.primary}
+                    color="#D94A34"
                   />
                 </View>
                 <View style={styles.addressDetails}>

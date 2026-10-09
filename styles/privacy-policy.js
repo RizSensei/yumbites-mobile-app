@@ -4,20 +4,20 @@ import { Colors } from '../constants/Colors';
 export const privacyPolicyStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: '#FFF9F3',
   },
   scrollContent: {
     padding: 20,
     paddingBottom: 40,
   },
   header: {
-    backgroundColor: Colors.primary,
-    borderRadius: 18,
-    padding: 22,
+    backgroundColor: '#F45B43',
+    borderRadius: 24,
+    padding: 24,
     marginBottom: 20,
   },
   eyebrow: {
-    color: '#e6ddff',
+    color: '#FFE6D6',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1,
@@ -31,18 +31,18 @@ export const privacyPolicyStyles = StyleSheet.create({
     marginBottom: 8,
   },
   intro: {
-    color: '#f5f1ff',
+    color: '#FFF8F2',
     fontSize: 14,
     lineHeight: 21,
   },
   updated: {
-    color: '#e6ddff',
+    color: '#FFE6D6',
     fontSize: 12,
     marginTop: 16,
   },
   section: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: 18,
     padding: 18,
     marginBottom: 14,
     elevation: 1,
@@ -52,7 +52,7 @@ export const privacyPolicyStyles = StyleSheet.create({
     shadowRadius: 4,
   },
   sectionNumber: {
-    color: Colors.primary,
+    color: '#D94A34',
     fontSize: 12,
     fontWeight: '700',
     marginBottom: 5,
@@ -87,13 +87,13 @@ export const privacyPolicyStyles = StyleSheet.create({
     lineHeight: 22,
   },
   contactCard: {
-    backgroundColor: '#f4efff',
-    borderRadius: 14,
+    backgroundColor: '#FFF0E8',
+    borderRadius: 18,
     padding: 18,
     marginTop: 2,
   },
   contactTitle: {
-    color: Colors.primary,
+    color: '#D94A34',
     fontSize: 17,
     fontWeight: '700',
     marginBottom: 6,
@@ -104,7 +104,7 @@ export const privacyPolicyStyles = StyleSheet.create({
     lineHeight: 22,
   },
   contactEmail: {
-    color: Colors.primary,
+    color: '#D94A34',
     fontSize: 14,
     fontWeight: '700',
     marginTop: 8,

@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -9,7 +10,6 @@ import {
   View,
 } from "react-native";
 import { Spacer, ThemedText, ThemedView } from "../../components/theme";
-import { Colors } from "../../constants/Colors";
 import { settingsStyles as styles } from "../../styles/settings";
 import { useAuth } from '../../contexts/auth-context';
 
@@ -98,7 +98,18 @@ const Settings = () => {
               disabled={item.disabled}
             >
               <View style={styles.itemLeft}>
-                <Ionicons name={item.icon} size={22} color={Colors.primary} />
+                <View
+                  style={[
+                    styles.itemIcon,
+                    item.id === "delete" && styles.itemIconDanger,
+                  ]}
+                >
+                  <Ionicons
+                    name={item.icon}
+                    size={19}
+                    color={item.id === "delete" ? "#C94236" : "#D94A34"}
+                  />
+                </View>
                 <View style={styles.itemTextContainer}>
                   <ThemedText style={styles.itemTitle}>{item.title}</ThemedText>
                   {item.description && (
@@ -113,7 +124,7 @@ const Settings = () => {
                 <Switch
                   value={item.value}
                   onValueChange={item.onValueChange}
-                  trackColor={{ false: "#e0e0e0", true: Colors.primary }}
+                  trackColor={{ false: "#E8DED5", true: "#F45B43" }}
                   thumbColor="#fff"
                 />
               ) : item.type === "badge" ? (
@@ -123,7 +134,7 @@ const Settings = () => {
                   </ThemedText>
                 </View>
               ) : (
-                <Ionicons name="chevron-forward" size={20} color="#999" />
+                <Ionicons name="chevron-forward" size={18} color="#C5B5AA" />
               )}
             </TouchableOpacity>
 
@@ -247,12 +258,36 @@ const Settings = () => {
     <ThemedView safeArea={true} style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View style={styles.header}>
+        <LinearGradient
+          colors={["#F45B43", "#E94E39", "#B83C30"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.header}
+        >
+          <View style={styles.headerTopline}>
+            <View style={styles.headerEyebrow}>
+              <Ionicons name="sparkles" size={13} color="#FFE4A8" />
+              <ThemedText style={styles.headerEyebrowText}>YOUR APP, YOUR WAY</ThemedText>
+            </View>
+            <View style={styles.headerArt}>
+              <Ionicons name="options" size={24} color="#D94A34" />
+            </View>
+          </View>
           <ThemedText style={styles.headerTitle}>Settings</ThemedText>
           <ThemedText style={styles.headerSubtitle}>
-            Manage your account and preferences
+            Little details that make YumBites feel like yours.
           </ThemedText>
-        </View>
+          <View style={styles.headerChips}>
+            <View style={styles.headerChip}>
+              <Ionicons name="notifications-outline" size={12} color="#FFFFFF" />
+              <ThemedText style={styles.headerChipText}>Notifications</ThemedText>
+            </View>
+            <View style={styles.headerChip}>
+              <Ionicons name="person-outline" size={12} color="#FFFFFF" />
+              <ThemedText style={styles.headerChipText}>Account</ThemedText>
+            </View>
+          </View>
+        </LinearGradient>
 
         <Spacer height={20} />
 

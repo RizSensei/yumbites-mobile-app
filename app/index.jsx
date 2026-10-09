@@ -51,7 +51,7 @@ const Home = () => {
         <View style={styles.brandBlock}>
           <View style={styles.mark}>
             <View style={styles.markInner}>
-              <Ionicons name="fast-food" size={34} color="#6849a7" />
+              <Ionicons name="fast-food" size={34} color="#D94A34" />
             </View>
           </View>
           <ThemedText style={styles.appName}>YumBites</ThemedText>

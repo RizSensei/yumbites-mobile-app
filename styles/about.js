@@ -4,7 +4,7 @@ import { Colors } from '../constants/Colors';
 export const aboutStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: '#FFF9F3',
   },
   content: {
     padding: 20,
@@ -12,10 +12,15 @@ export const aboutStyles = StyleSheet.create({
   },
   hero: {
     alignItems: 'center',
-    backgroundColor: Colors.primary,
-    borderRadius: 18,
-    padding: 28,
+    backgroundColor: '#F45B43',
+    borderRadius: 26,
+    padding: 30,
     marginBottom: 20,
+    shadowColor: '#9D3B2E',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.16,
+    shadowRadius: 14,
+    elevation: 4,
   },
   logo: {
     width: 68,
@@ -37,8 +42,8 @@ export const aboutStyles = StyleSheet.create({
     marginTop: 6,
   },
   section: {
-    backgroundColor: '#fff',
-    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
     padding: 18,
     marginBottom: 14,
   },
@@ -56,13 +61,13 @@ export const aboutStyles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: '#fff',
-    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
     padding: 18,
     marginBottom: 12,
   },
   icon: {
-    color: Colors.primary,
+    color: '#D94A34',
   },
   infoText: {
     flex: 1,
@@ -82,7 +87,7 @@ export const aboutStyles = StyleSheet.create({
   },
   link: {
     textAlign: 'center',
-    color: Colors.primary,
+    color: '#D94A34',
     fontSize: 16,
     fontWeight: 'bold',
   },

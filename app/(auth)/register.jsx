@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -48,22 +49,39 @@ const Register = () => {
   };
 
   return (
-    <ThemedView safeArea={true}>
+    <ThemedView safeArea={true} style={styles.screen}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Header */}
-          <View style={styles.header}>
-            <ThemedText style={styles.title}>Create Account</ThemedText>
-            <ThemedText style={styles.subtitle}>Join YumBites and start ordering</ThemedText>
-          </View>
-
-          <Spacer height={30} />
+          <LinearGradient colors={['#F78355', '#EC6345', '#D94D40']} style={styles.hero}>
+            <View style={styles.brandRow}>
+              <View style={styles.brandIcon}>
+                <Ionicons name="restaurant" size={19} color="#E85D40" />
+              </View>
+              <ThemedText style={styles.brandName}>YUMBITES</ThemedText>
+              <ThemedText style={styles.brandDot}> · FOOD, FEEL GOOD</ThemedText>
+            </View>
+            <View style={styles.heroContent}>
+              <View style={styles.heroCopy}>
+                <ThemedText style={styles.eyebrow}>GOOD TASTE STARTS HERE</ThemedText>
+                <ThemedText style={styles.title}>Make room{'\n'}for delicious.</ThemedText>
+                <ThemedText style={styles.subtitle}>Create an account. Your next favorite is waiting.</ThemedText>
+              </View>
+              <View style={styles.plate}>
+                <ThemedText style={styles.foodEmoji}>🥟</ThemedText>
+              </View>
+            </View>
+            <View style={styles.heroCircle} />
+          </LinearGradient>
 
           {/* Form */}
           <View style={styles.formContainer}>
+            <View style={styles.formHeading}>
+              <ThemedText style={styles.formTitle}>Join the table</ThemedText>
+              <ThemedText style={styles.formSubtitle}>A few details and you’re in.</ThemedText>
+            </View>
             <Controller
               control={control}
               name="name"

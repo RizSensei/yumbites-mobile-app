@@ -1,7 +1,7 @@
 import { foodCategoriesApi } from '../services/api';
 import { useQuery } from '@tanstack/react-query';
-
-const responseData = (response) => response?.data?.data ?? response?.data;
+import { mockCategories } from '../data/mockData';
+import { fetchArrayWithMockFallback } from './queryFallback';
 
 export const foodCategoryQueryKeys = {
     all: ['food-categories'],
@@ -12,6 +12,13 @@ export const foodCategoryQueryKeys = {
 export const useFoodCategories = () => {
     return useQuery({
         queryKey: foodCategoryQueryKeys.list({ search: '', status: '' }),
-        queryFn: async () => responseData(await foodCategoriesApi.getAll()),
+        queryFn: () => fetchArrayWithMockFallback({
+            label: 'food categories',
+            fetcher: () => foodCategoriesApi.getAll(),
+            fallback: () => mockCategories.map((category) => ({ ...category })),
+            keys: ['categories', 'items'],
+        }),
+        initialData: () => mockCategories.map((category) => ({ ...category })),
+        initialDataUpdatedAt: 0,
     });
 };

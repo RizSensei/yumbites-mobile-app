@@ -5,14 +5,13 @@ import { landingBackgroundStyles as styles } from "../../../styles/landing-backg
 const LandingBackground = () => {
   return (
     <LinearGradient
-      // LEGENDARY: Galactic Nebula Gradient
       colors={[
-        "#140a29",
-        "#291d42",
-        "#533a85",
-        "#6849a7",
-        "#987dc9",
-        "#c8b4e5",
+        "#A9362B",
+        "#D94A34",
+        "#F45B43",
+        "#F4875A",
+        "#F7B46C",
+        "#FFE0A9",
       ]}
       start={{ x: 0.1, y: 0 }}
       end={{ x: 0.9, y: 1 }}

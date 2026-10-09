@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import {
   Image,
@@ -283,7 +284,33 @@ const Favorites = () => {
           </TouchableOpacity>
         )}
         
-        <Image source={{ uri: item.image }} style={styles.itemImage} />
+        <View style={styles.itemImageFrame}>
+          <Image source={{ uri: item.image }} style={styles.itemImage} />
+          <LinearGradient
+            colors={['rgba(40, 24, 18, 0)', 'rgba(40, 24, 18, 0.62)']}
+            style={styles.imageShade}
+          />
+          <View style={styles.imageTopRow}>
+            {item.tags?.includes('Popular') && (
+              <View style={styles.popularBadge}>
+                <Ionicons name="flame" size={11} color="#9B431D" />
+                <ThemedText style={styles.popularBadgeText}>POPULAR</ThemedText>
+              </View>
+            )}
+            {item.tags?.includes('Vegetarian') && (
+              <View style={styles.vegetarianBadge}>
+                <Ionicons name="leaf" size={13} color="#397B4E" />
+              </View>
+            )}
+          </View>
+          <View style={styles.imageMeta}>
+            <View style={styles.imageRating}>
+              <Ionicons name="star" size={12} color="#FFD36A" />
+              <ThemedText style={styles.imageRatingText}>{Number(item.rating || 0).toFixed(1)}</ThemedText>
+            </View>
+            <ThemedText style={styles.imageTimeText}>{item.deliveryTime}</ThemedText>
+          </View>
+        </View>
         
         <View style={styles.itemContent}>
           <View style={styles.itemHeader}>

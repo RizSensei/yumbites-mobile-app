@@ -6,6 +6,8 @@ const Input = ({
   label,
   error,
   secureTextEntry = false,
+  leftIcon,
+  rightIcon,
   ...props
 }) => {
   const colorScheme = useColorScheme();
@@ -16,20 +18,25 @@ const Input = ({
       {label && (
         <Text style={[styles.label, { color: theme.text }]}>{label}</Text>
       )}
-      <TextInput
+      <View
         style={[
-          styles.input,
+          styles.inputWrapper,
           {
             backgroundColor: theme.uiBackground,
-            color: theme.text,
             borderColor: error ? Colors.warning : 'transparent',
             borderWidth: error ? 1 : 0,
           },
         ]}
-        placeholderTextColor={theme.iconColor}
-        secureTextEntry={secureTextEntry}
-        {...props}
-      />
+      >
+        {leftIcon ? <View style={styles.icon}>{leftIcon}</View> : null}
+        <TextInput
+          style={[styles.input, { color: theme.text }]}
+          placeholderTextColor={theme.iconColor}
+          secureTextEntry={secureTextEntry}
+          {...props}
+        />
+        {rightIcon ? <View style={styles.icon}>{rightIcon}</View> : null}
+      </View>
       {error && (
         <Text style={styles.errorText}>{error.message || error}</Text>
       )}
@@ -38,4 +45,3 @@ const Input = ({
 };
 
 export default Input;
-

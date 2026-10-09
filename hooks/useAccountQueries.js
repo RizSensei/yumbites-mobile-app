@@ -1,5 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authApi, cartApi, orderHistoryApi, profileApi } from '../services/api';
+import {
+  createMockCart,
+  createMockFavourites,
+  createMockOrders,
+  mockUser,
+} from '../data/mockData';
+import {
+  fetchArrayWithMockFallback,
+  fetchValueWithMockFallback,
+} from './queryFallback';
 
 export const accountQueryKeys = {
   me: ['profile', 'me'],
@@ -12,23 +22,50 @@ const responseData = (response) => response?.data?.data ?? response?.data;
 
 export const useMeQuery = (enabled = true) => useQuery({
   queryKey: accountQueryKeys.me,
-  queryFn: async () => responseData(await profileApi.getProfile()),
+  queryFn: () => fetchValueWithMockFallback({
+    label: 'profile',
+    fetcher: () => profileApi.getProfile(),
+    fallback: () => ({ ...mockUser }),
+  }),
+  initialData: () => ({ ...mockUser }),
+  initialDataUpdatedAt: 0,
   enabled,
 });
 
 export const useFavouriteDishesQuery = () => useQuery({
   queryKey: accountQueryKeys.favourites,
-  queryFn: async () => responseData(await profileApi.getFavouriteDishes()),
+  queryFn: () => fetchArrayWithMockFallback({
+    label: 'favourite dishes',
+    fetcher: () => profileApi.getFavouriteDishes(),
+    fallback: createMockFavourites,
+    keys: ['favourites', 'favorites', 'dishes', 'items'],
+  }),
+  initialData: createMockFavourites,
+  initialDataUpdatedAt: 0,
 });
 
 export const useOrderHistoryQuery = () => useQuery({
   queryKey: accountQueryKeys.orders,
-  queryFn: async () => responseData(await orderHistoryApi.getMyOrders()),
+  queryFn: () => fetchArrayWithMockFallback({
+    label: 'order history',
+    fetcher: () => orderHistoryApi.getMyOrders(),
+    fallback: createMockOrders,
+    keys: ['orders', 'items'],
+  }),
+  initialData: createMockOrders,
+  initialDataUpdatedAt: 0,
 });
 
 export const useCartQuery = () => useQuery({
   queryKey: accountQueryKeys.cart,
-  queryFn: async () => responseData(await cartApi.get()),
+  queryFn: () => fetchArrayWithMockFallback({
+    label: 'cart',
+    fetcher: () => cartApi.get(),
+    fallback: createMockCart,
+    keys: ['items', 'cartItems', 'cart'],
+  }),
+  initialData: createMockCart,
+  initialDataUpdatedAt: 0,
 });
 
 export const useCartMutation = (mutationFn) => {

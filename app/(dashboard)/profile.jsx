@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useRouter } from 'expo-router';
 import {
   Image,
@@ -10,7 +11,6 @@ import {
 } from 'react-native';
 import Button from '../../components/Button';
 import { ThemedText, ThemedView } from '../../components/theme';
-import { Colors } from '../../constants/Colors';
 import { profileStyles as styles } from '../../styles/profile';
 
 const moreItems = [
@@ -74,9 +74,20 @@ const Profile = () => {
         contentContainerStyle={styles.scrollContent}
       >
         {/* Header with Gradient Background */}
-        <View style={styles.header}>
+        <LinearGradient
+          colors={['#F45B43', '#E94E39', '#B83C30']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.header}
+        >
+          <View style={styles.headerDecor}>
+            <Ionicons name="sparkles" size={20} color="rgba(255, 228, 168, 0.9)" />
+          </View>
           <View style={styles.headerTop}>
-            <ThemedText style={styles.headerTitle}>Profile</ThemedText>
+            <View>
+              <ThemedText style={styles.headerEyebrow}>YOUR YUMBITES SPACE</ThemedText>
+              <ThemedText style={styles.headerTitle}>My profile</ThemedText>
+            </View>
             <TouchableOpacity style={styles.settingsButton}>
               <Ionicons name="settings-outline" size={24} color="#fff" />
             </TouchableOpacity>
@@ -91,7 +102,7 @@ const Profile = () => {
                 />
               ) : (
                 <View style={styles.avatarPlaceholder}>
-                  <Ionicons name="person" size={36} color={Colors.primary} />
+                  <Ionicons name="person" size={36} color="#D94A34" />
                 </View>
               )}
               {isLoggedIn && (
@@ -125,30 +136,47 @@ const Profile = () => {
                 </>
               ) : (
                 <>
+                  <View style={styles.memberPill}>
+                    <Ionicons name="sparkles" size={11} color="#9B431D" />
+                    <ThemedText style={styles.memberPillText}>YOUR FOODIE PROFILE</ThemedText>
+                  </View>
                   <ThemedText style={styles.userName}>Welcome!</ThemedText>
                   <ThemedText style={styles.userSubtext}>
-                    Sign in to access your orders, favorites, and more
+                    Your next great meal is waiting. Sign in to make it yours.
                   </ThemedText>
                 </>
               )}
             </View>
           </View>
-        </View>
+        </LinearGradient>
 
         {/* Main Content */}
         <View style={styles.content}>
           {/* Login/Signup Card */}
           {!isLoggedIn && (
             <Pressable style={styles.loginCard} onPress={handleLogin}>
-              <View style={styles.loginCardContent}>
-                <Ionicons name="log-in-outline" size={32} color={Colors.primary} />
-                <View style={styles.loginTextContainer}>
-                  <ThemedText style={styles.loginTitle}>Join YumBites</ThemedText>
-                  <ThemedText style={styles.loginSubtitle}>
-                    Sign in for personalized recommendations and faster checkout
-                  </ThemedText>
+              <LinearGradient
+                colors={['#FFF0E8', '#FFF8EE']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.loginCardGradient}
+              >
+                <View style={styles.loginCardContent}>
+                  <View style={styles.loginIconWrap}>
+                    <Ionicons name="restaurant-outline" size={25} color="#D94A34" />
+                  </View>
+                  <View style={styles.loginTextContainer}>
+                    <ThemedText style={styles.loginEyebrow}>MORE DELICIOUS, PERSONAL</ThemedText>
+                    <ThemedText style={styles.loginTitle}>Join YumBites</ThemedText>
+                      <ThemedText style={styles.loginSubtitle}>
+                        Save favorites, track orders and check out faster.
+                      </ThemedText>
+                  </View>
+                  <View style={styles.loginArrow}>
+                    <Ionicons name="arrow-forward" size={17} color="#FFFFFF" />
+                  </View>
                 </View>
-              </View>
+              </LinearGradient>
             </Pressable>
           )}
 
@@ -157,28 +185,28 @@ const Profile = () => {
             <View style={styles.quickActions}>
               <TouchableOpacity style={styles.quickActionItem}>
                 <View style={styles.quickActionIcon}>
-                  <Ionicons name="time-outline" size={24} color={Colors.primary} />
+                  <Ionicons name="time-outline" size={24} color="#D94A34" />
                 </View>
                 <ThemedText style={styles.quickActionText}>Recent Orders</ThemedText>
               </TouchableOpacity>
               
               <TouchableOpacity style={styles.quickActionItem}>
                 <View style={styles.quickActionIcon}>
-                  <Ionicons name="heart-outline" size={24} color={Colors.primary} />
+                  <Ionicons name="heart-outline" size={24} color="#D94A34" />
                 </View>
                 <ThemedText style={styles.quickActionText}>Favorites</ThemedText>
               </TouchableOpacity>
               
               <TouchableOpacity style={styles.quickActionItem}>
                 <View style={styles.quickActionIcon}>
-                  <Ionicons name="location-outline" size={24} color={Colors.primary} />
+                  <Ionicons name="location-outline" size={24} color="#D94A34" />
                 </View>
                 <ThemedText style={styles.quickActionText}>Addresses</ThemedText>
               </TouchableOpacity>
               
               <TouchableOpacity style={styles.quickActionItem}>
                 <View style={styles.quickActionIcon}>
-                  <Ionicons name="card-outline" size={24} color={Colors.primary} />
+                  <Ionicons name="card-outline" size={24} color="#D94A34" />
                 </View>
                 <ThemedText style={styles.quickActionText}>Payment</ThemedText>
               </TouchableOpacity>
@@ -186,6 +214,15 @@ const Profile = () => {
           )}
 
           {/* Menu Items */}
+          <View style={styles.sectionHeading}>
+            <View>
+              <ThemedText style={styles.sectionEyebrow}>MADE FOR YOU</ThemedText>
+              <ThemedText style={styles.sectionTitle}>Your account</ThemedText>
+            </View>
+            <View style={styles.sectionHeadingIcon}>
+              <Ionicons name="person-circle-outline" size={20} color="#D94A34" />
+            </View>
+          </View>
           <View style={styles.menuCard}>
             {moreItems.map((item, index) => (
               <Link
@@ -203,9 +240,9 @@ const Profile = () => {
                   <View style={styles.menuItemLeft}>
                     <View style={[
                       styles.menuIconContainer,
-                      { backgroundColor: Colors.primary + '15' }
+                      { backgroundColor: '#FFF0E8' }
                     ]}>
-                      <Ionicons name={item.icon} size={22} color={Colors.primary} />
+                      <Ionicons name={item.icon} size={22} color="#D94A34" />
                     </View>
                     <View style={styles.menuTextContainer}>
                       <ThemedText style={styles.menuLabel}>{item.label}</ThemedText>
@@ -216,6 +253,14 @@ const Profile = () => {
                       )}
                     </View>
                   </View>
+                  <View style={styles.menuItemRight}>
+                    {item.badge && (
+                      <View style={styles.badge}>
+                        <ThemedText style={styles.badgeText}>{item.badge}</ThemedText>
+                      </View>
+                    )}
+                    <Ionicons name="chevron-forward" size={18} color="#C5B5AA" />
+                  </View>
                 </TouchableOpacity>
               </Link>
             ))}
@@ -223,23 +268,31 @@ const Profile = () => {
 
           {/* Support Section */}
           <View style={styles.supportCard}>
-            <ThemedText style={styles.supportTitle}>Need Help?</ThemedText>
+            <View style={styles.supportHeader}>
+              <View style={styles.supportIcon}>
+                <Ionicons name="chatbubbles-outline" size={20} color="#D94A34" />
+              </View>
+              <View>
+                <ThemedText style={styles.supportEyebrow}>WE’RE HERE FOR YOU</ThemedText>
+                <ThemedText style={styles.supportTitle}>Need a hand?</ThemedText>
+              </View>
+            </View>
             <ThemedText style={styles.supportText}>
-              Our support team is here to help you 24/7
+              Our friendly team is always happy to help.
             </ThemedText>
             <View style={styles.supportButtons}>
               <TouchableOpacity style={styles.supportButton}>
-                <Ionicons name="chatbubble-outline" size={20} color={Colors.primary} />
+                <Ionicons name="chatbubble-outline" size={20} color="#D94A34" />
                 <ThemedText style={styles.supportButtonText}>Live Chat</ThemedText>
               </TouchableOpacity>
               
               <TouchableOpacity style={styles.supportButton}>
-                <Ionicons name="call-outline" size={20} color={Colors.primary} />
+                <Ionicons name="call-outline" size={20} color="#D94A34" />
                 <ThemedText style={styles.supportButtonText}>Call Us</ThemedText>
               </TouchableOpacity>
               
               <TouchableOpacity style={styles.supportButton}>
-                <Ionicons name="mail-outline" size={20} color={Colors.primary} />
+                <Ionicons name="mail-outline" size={20} color="#D94A34" />
                 <ThemedText style={styles.supportButtonText}>Email</ThemedText>
               </TouchableOpacity>
             </View>
@@ -258,7 +311,7 @@ const Profile = () => {
               onPress={handleLogout}
               activeOpacity={0.7}
             >
-              <Ionicons name="log-out-outline" size={20} color={Colors.warning} />
+              <Ionicons name="log-out-outline" size={20} color="#D94A34" />
               <ThemedText style={styles.logoutText}>Log Out</ThemedText>
             </TouchableOpacity>
           )}

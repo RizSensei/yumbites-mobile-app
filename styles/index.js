@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const indexStyles = StyleSheet.create({
   fullContainer: {
     flex: 1,
-    backgroundColor: '#140a29',
+    backgroundColor: '#A9362B',
   },
   contentContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -13,7 +13,7 @@ export const indexStyles = StyleSheet.create({
     paddingBottom: 42,
   },
   topLabel: {
-    color: '#d9cdf0',
+    color: '#FFE7CE',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 2,
@@ -49,7 +49,7 @@ export const indexStyles = StyleSheet.create({
     letterSpacing: -1,
   },
   tagline: {
-    color: '#e7def5',
+    color: '#FFF2E3',
     fontSize: 16,
     marginTop: 8,
     letterSpacing: 0.2,
@@ -64,12 +64,12 @@ export const indexStyles = StyleSheet.create({
     marginBottom: 12,
   },
   loadingText: {
-    color: '#f4effb',
+    color: '#FFF7EF',
     fontSize: 13,
     fontWeight: '600',
   },
   loadingPercent: {
-    color: '#cdbbe9',
+    color: '#FFE0A9',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -86,7 +86,7 @@ export const indexStyles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   footerText: {
-    color: '#b8a6db',
+    color: '#FFE0A9',
     fontSize: 11,
     textAlign: 'center',
     marginTop: 14,

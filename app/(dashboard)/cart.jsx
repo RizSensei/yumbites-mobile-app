@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   Alert,
   Image,
@@ -12,7 +13,6 @@ import {
 } from 'react-native';
 import Button from '../../components/Button';
 import { ThemedText, ThemedView } from '../../components/theme';
-import { Colors } from '../../constants/Colors';
 import { cartStyles as styles } from '../../styles/cart';
 import { useCartMutation, useCartQuery } from '../../hooks/useAccountQueries';
 import { cartApi, ordersApi } from '../../services/api';
@@ -29,17 +29,21 @@ const normalizeCartItem = (item) => ({
 });
 
 const Cart = () => {
-  const { data: cartData, isLoading } = useCartQuery();
+  const { data: cartData } = useCartQuery();
   const updateCartMutation = useCartMutation(({ id, ...data }) => cartApi.updateItem(id, data));
   const removeCartMutation = useCartMutation(cartApi.removeItem);
   const orderMutation = useMutation({ mutationFn: ordersApi.create });
   const [promoCode, setPromoCode] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const cartItems = toArray(cartData).map(normalizeCartItem);
+  const itemCount = cartItems.reduce((count, item) => count + Number(item.quantity || 1), 0);
 
   // Calculate totals
   const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + Number(item.price || 0), 0);
+    return cartItems.reduce(
+      (total, item) => total + Number(item.price || 0) * Number(item.quantity || 1),
+      0,
+    );
   };
 
   const calculateDeliveryFee = () => {
@@ -166,10 +170,15 @@ const Cart = () => {
   // Render empty cart
   const renderEmptyCart = () => (
     <View style={styles.emptyCartContainer}>
-      <Ionicons name="cart-outline" size={100} color="#e0e0e0" />
+      <View style={styles.emptyCartArt}>
+        <Ionicons name="bag-handle-outline" size={52} color="#F45B43" />
+        <View style={styles.emptyCartSparkle}>
+          <Ionicons name="sparkles" size={17} color="#E9A842" />
+        </View>
+      </View>
       <ThemedText style={styles.emptyCartTitle}>Your cart is empty</ThemedText>
       <ThemedText style={styles.emptyCartText}>
-        Add delicious food from our menu to get started!
+        Your next favorite meal is just a few taps away.
       </ThemedText>
       <Button
         title="Browse Menu"
@@ -182,14 +191,39 @@ const Cart = () => {
   // Render cart item
   const renderCartItem = (item) => (
     <View key={item.id} style={styles.cartItem}>
-      <Image source={{ uri: item.image }} style={styles.itemImage} />
+      <View style={styles.itemImageFrame}>
+        <Image source={{ uri: item.image }} style={styles.itemImage} />
+        <LinearGradient
+          colors={['rgba(40, 24, 18, 0)', 'rgba(40, 24, 18, 0.62)']}
+          style={styles.imageShade}
+        />
+        <View style={styles.imageTopRow}>
+          <View style={styles.cartItemBadge}>
+            <Ionicons name="bag-handle" size={11} color="#9B431D" />
+            <ThemedText style={styles.cartItemBadgeText}>IN CART</ThemedText>
+          </View>
+        </View>
+        <View style={styles.imageMeta}>
+          {item.rating ? (
+            <View style={styles.imageRating}>
+              <Ionicons name="star" size={12} color="#FFD36A" />
+              <ThemedText style={styles.imageRatingText}>{Number(item.rating).toFixed(1)}</ThemedText>
+            </View>
+          ) : (
+            <View />
+          )}
+          {item.prepTime && (
+            <ThemedText style={styles.imageTimeText}>{item.prepTime}</ThemedText>
+          )}
+        </View>
+      </View>
       
       <View style={styles.itemContent}>
         <View style={styles.itemHeader}>
           <View style={styles.itemInfo}>
             <ThemedText style={styles.itemName}>{item.name}</ThemedText>
             <ThemedText style={styles.itemDescription}>{item.description}</ThemedText>
-            <ThemedText style={styles.itemRestaurant}>{item.restaurant}</ThemedText>
+            <ThemedText style={styles.itemRestaurant}>{item.restaurant || 'YumBites kitchen'}</ThemedText>
           </View>
           
           <TouchableOpacity 
@@ -210,7 +244,7 @@ const Cart = () => {
               <Ionicons 
                 name="remove" 
                 size={18} 
-                color={item.quantity <= 1 ? '#ccc' : Colors.primary} 
+                color={item.quantity <= 1 ? '#ccc' : '#D94A34'}
               />
             </TouchableOpacity>
             
@@ -220,7 +254,7 @@ const Cart = () => {
               style={styles.quantityButton}
               onPress={() => increaseQuantity(item)}
             >
-              <Ionicons name="add" size={18} color={Colors.primary} />
+              <Ionicons name="add" size={18} color="#D94A34" />
             </TouchableOpacity>
           </View>
 
@@ -231,7 +265,7 @@ const Cart = () => {
 
         {item.customizable && (
           <TouchableOpacity style={styles.customizeButton}>
-            <Ionicons name="create-outline" size={16} color={Colors.primary} />
+            <Ionicons name="create-outline" size={16} color="#D94A34" />
             <ThemedText style={styles.customizeText}>Customize</ThemedText>
           </TouchableOpacity>
         )}
@@ -242,7 +276,15 @@ const Cart = () => {
   // Render order summary
   const renderOrderSummary = () => (
     <View style={styles.summaryCard}>
-      <ThemedText style={styles.summaryTitle}>Order Summary</ThemedText>
+      <View style={styles.summaryHeader}>
+        <View style={styles.summaryIcon}>
+          <Ionicons name="receipt-outline" size={19} color="#D94A34" />
+        </View>
+        <View>
+          <ThemedText style={styles.summaryEyebrow}>THE DETAILS</ThemedText>
+          <ThemedText style={styles.summaryTitle}>Order summary</ThemedText>
+        </View>
+      </View>
       
       <View style={styles.summaryRow}>
         <ThemedText style={styles.summaryLabel}>Subtotal</ThemedText>
@@ -267,24 +309,27 @@ const Cart = () => {
 
       {calculateDeliveryFee() > 0 && calculateSubtotal() < 25 && (
         <View style={styles.freeDeliveryNote}>
-          <Ionicons name="information-circle" size={16} color={Colors.primary} />
+          <Ionicons name="information-circle" size={16} color="#D94A34" />
           <ThemedText style={styles.freeDeliveryText}>
             Add ${(25 - calculateSubtotal()).toFixed(2)} more for free delivery
           </ThemedText>
         </View>
       )}
 
-      <TextInput
-        style={styles.promoInput}
-        placeholder="Delivery address"
-        value={deliveryAddress}
-        onChangeText={setDeliveryAddress}
-        placeholderTextColor="#999"
-      />
+      <View style={styles.addressField}>
+        <Ionicons name="location-outline" size={20} color="#D94A34" />
+        <TextInput
+          style={styles.addressInput}
+          placeholder="Add your delivery address"
+          value={deliveryAddress}
+          onChangeText={setDeliveryAddress}
+          placeholderTextColor="#A3978F"
+        />
+      </View>
 
       <View style={styles.promoCodeContainer}>
         <View style={styles.promoInputContainer}>
-          <Ionicons name="pricetag-outline" size={20} color={Colors.primary} />
+          <Ionicons name="pricetag-outline" size={20} color="#D94A34" />
           <TextInput
             style={styles.promoInput}
             placeholder="Enter promo code"
@@ -323,9 +368,13 @@ const Cart = () => {
       >
         {/* Header */}
         <View style={styles.header}>
-          <ThemedText style={styles.headerTitle}>Your Cart</ThemedText>
+          <View>
+            <ThemedText style={styles.headerEyebrow}>GOOD TASTE STARTS HERE</ThemedText>
+            <ThemedText style={styles.headerTitle}>Your cart</ThemedText>
+          </View>
           {cartItems.length > 0 && (
-            <TouchableOpacity onPress={clearCart}>
+            <TouchableOpacity onPress={clearCart} style={styles.clearCartButton}>
+              <Ionicons name="trash-outline" size={15} color="#D94A34" />
               <ThemedText style={styles.clearCartText}>Clear All</ThemedText>
             </TouchableOpacity>
           )}
@@ -336,10 +385,51 @@ const Cart = () => {
           renderEmptyCart()
         ) : (
           <>
+            <LinearGradient
+              colors={['#F45B43', '#E94E39', '#B83C30']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.cartHero}
+            >
+              <View style={styles.cartHeroCopy}>
+                <View style={styles.cartHeroEyebrow}>
+                  <Ionicons name="sparkles" size={13} color="#FFE4A8" />
+                  <ThemedText style={styles.cartHeroEyebrowText}>A LITTLE JOY IS ON ITS WAY</ThemedText>
+                </View>
+                <ThemedText style={styles.cartHeroTitle}>Your picks,{'\n'}made fresh.</ThemedText>
+                <ThemedText style={styles.cartHeroCaption}>
+                  {calculateDeliveryFee() === 0
+                    ? 'You unlocked free delivery!'
+                    : `Add $${Math.max(0, 25 - calculateSubtotal()).toFixed(2)} for free delivery`}
+                </ThemedText>
+              </View>
+              <View style={styles.cartHeroArt}>
+                <View style={styles.cartHeroPlate}>
+                  <ThemedText style={styles.cartHeroEmoji}>🥡</ThemedText>
+                </View>
+                <View style={styles.cartHeroCount}>
+                  <ThemedText style={styles.cartHeroCountText}>{itemCount}</ThemedText>
+                </View>
+              </View>
+              <View style={styles.deliveryProgressTrack}>
+                <View
+                  style={[
+                    styles.deliveryProgressFill,
+                    { width: `${Math.min((calculateSubtotal() / 25) * 100, 100)}%` },
+                  ]}
+                />
+              </View>
+            </LinearGradient>
             <View style={styles.itemsCountContainer}>
-              <ThemedText style={styles.itemsCount}>
-                {cartItems.length} item{cartItems.length > 1 ? 's' : ''} in cart
-              </ThemedText>
+              <View>
+                <ThemedText style={styles.itemsCountTitle}>Your delicious picks</ThemedText>
+                <ThemedText style={styles.itemsCount}>
+                  {itemCount} item{itemCount === 1 ? '' : 's'} in your bag
+                </ThemedText>
+              </View>
+              <View style={styles.itemsCountBadge}>
+                <Ionicons name="restaurant-outline" size={15} color="#D94A34" />
+              </View>
             </View>
 
             <View style={styles.cartItemsContainer}>
@@ -350,7 +440,8 @@ const Cart = () => {
 
             {/* Suggested Items */}
             <View style={styles.suggestedContainer}>
-              <ThemedText style={styles.suggestedTitle}>You might also like</ThemedText>
+              <ThemedText style={styles.suggestedEyebrow}>A LITTLE SOMETHING EXTRA</ThemedText>
+              <ThemedText style={styles.suggestedTitle}>Perfect sidekicks</ThemedText>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <TouchableOpacity style={styles.suggestedItem}>
                   <Image 
@@ -383,6 +474,25 @@ const Cart = () => {
           </>
         )}
       </ScrollView>
+      {cartItems.length > 0 && (
+        <View style={styles.checkoutContainer}>
+          <View style={styles.checkoutInfo}>
+            <ThemedText style={styles.checkoutTotal}>
+              ${calculateTotal().toFixed(2)}
+            </ThemedText>
+            <ThemedText style={styles.checkoutItems}>
+              {itemCount} item{itemCount === 1 ? '' : 's'} - estimated total
+            </ThemedText>
+          </View>
+          <View style={styles.checkoutButton}>
+            <Button
+              title="Checkout"
+              onPress={handleCheckout}
+              loading={orderMutation.isPending}
+            />
+          </View>
+        </View>
+      )}
     </ThemedView>
   );
 };

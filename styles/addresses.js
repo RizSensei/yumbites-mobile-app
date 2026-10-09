@@ -4,7 +4,7 @@ import { Colors } from '../constants/Colors';
 export const addressesStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: '#FFF9F3',
   },
   content: {
     padding: 20,
@@ -14,7 +14,7 @@ export const addressesStyles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
-    color: Colors.primary,
+    color: '#34261F',
     fontSize: 28,
     fontWeight: '700',
     marginBottom: 8,
@@ -28,10 +28,12 @@ export const addressesStyles = StyleSheet.create({
     marginBottom: 20,
   },
   addressCard: {
-    backgroundColor: '#fff',
-    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
     padding: 16,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#F5EADF',
   },
   cardTop: {
     flexDirection: 'row',
@@ -43,7 +45,7 @@ export const addressesStyles = StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f0eafd',
+    backgroundColor: '#FFF0E8',
     marginRight: 12,
   },
   addressDetails: {
@@ -77,7 +79,7 @@ export const addressesStyles = StyleSheet.create({
     lineHeight: 20,
   },
   details: {
-    color: '#888',
+    color: '#A3978F',
     fontSize: 13,
     marginTop: 2,
   },
@@ -86,12 +88,12 @@ export const addressesStyles = StyleSheet.create({
   },
   defaultButton: {
     borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
+    borderTopColor: '#F5EADF',
     marginTop: 14,
     paddingTop: 12,
   },
   defaultButtonText: {
-    color: Colors.primary,
+    color: '#D94A34',
     fontSize: 13,
     fontWeight: '600',
   },

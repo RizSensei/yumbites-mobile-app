@@ -7,9 +7,11 @@ const MenuCard = ({ item, onPress }) => {
     <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.9}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.image }} style={styles.image} />
-        {/* Favorite button */}
-        <TouchableOpacity style={styles.favoriteButton}>
-          <Ionicons name="heart-outline" size={20} color="#fff" />
+        <TouchableOpacity
+          style={styles.favoriteButton}
+          accessibilityLabel={`Add ${item.name} to favourites`}
+        >
+          <Ionicons name="heart-outline" size={17} color="#E65D40" />
         </TouchableOpacity>
       </View>
       
@@ -18,11 +20,9 @@ const MenuCard = ({ item, onPress }) => {
         <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
         
         <View style={styles.footer}>
-          <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-          <TouchableOpacity style={styles.addButton}>
-            <Text style={styles.addButtonText}>
-              <Ionicons name="cart-outline" size={20} color="#fff" />
-            </Text>
+          <Text style={styles.price}>${Number(item.price || 0).toFixed(2)}</Text>
+          <TouchableOpacity style={styles.addButton} accessibilityLabel={`Add ${item.name} to cart`}>
+            <Ionicons name="add" size={20} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
       </View>

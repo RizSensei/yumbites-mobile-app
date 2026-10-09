@@ -4,7 +4,7 @@ import { Colors } from '../constants/Colors';
 export const changePasswordStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: '#FFF9F3',
   },
   content: {
     padding: 20,
@@ -14,7 +14,7 @@ export const changePasswordStyles = StyleSheet.create({
     marginBottom: 28,
   },
   title: {
-    color: Colors.primary,
+    color: '#34261F',
     fontSize: 28,
     fontWeight: '700',
     marginBottom: 8,
@@ -25,8 +25,15 @@ export const changePasswordStyles = StyleSheet.create({
     lineHeight: 22,
   },
   form: {
-    backgroundColor: '#fff',
-    borderRadius: 14,
-    padding: 18,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 22,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#F5EADF',
+    shadowColor: '#563A2E',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.07,
+    shadowRadius: 12,
+    elevation: 2,
   },
 });

@@ -22,7 +22,7 @@ export const landingBackgroundStyles = StyleSheet.create({
     left: "-24%",
     width: "110%",
     height: 110,
-    backgroundColor: "rgba(20, 10, 41, 0.28)",
+    backgroundColor: "rgba(125, 47, 35, 0.2)",
     transform: [{ rotate: "-18deg" }],
   },
   frameLine: {

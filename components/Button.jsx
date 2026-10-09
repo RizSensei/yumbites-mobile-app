@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { buttonStyles as styles } from '../styles/button';
 
@@ -8,6 +8,7 @@ const Button = ({
   loading = false,
   disabled = false,
   variant = 'primary',
+  leftIcon,
   ...props
 }) => {
   const isDisabled = disabled || loading;
@@ -37,11 +38,13 @@ const Button = ({
       {loading ? (
         <ActivityIndicator color={variant === 'secondary' ? Colors.primary : '#fff'} />
       ) : (
-        <Text style={getTextStyle()}>{title}</Text>
+        <View style={styles.content}>
+          {leftIcon}
+          <Text style={getTextStyle()}>{title}</Text>
+        </View>
       )}
     </TouchableOpacity>
   );
 };
 
 export default Button;
-

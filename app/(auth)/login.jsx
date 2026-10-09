@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -47,22 +48,39 @@ const Login = () => {
   };
 
   return (
-    <ThemedView safeArea={true}>
+    <ThemedView safeArea={true} style={styles.screen}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Header */}
-          <View style={styles.header}>
-            <ThemedText style={styles.title}>Welcome Back</ThemedText>
-            <ThemedText style={styles.subtitle}>Sign in to your account</ThemedText>
-          </View>
-
-          <Spacer height={30} />
+          <LinearGradient colors={['#F78355', '#EC6345', '#D94D40']} style={styles.hero}>
+            <View style={styles.brandRow}>
+              <View style={styles.brandIcon}>
+                <Ionicons name="restaurant" size={19} color="#E85D40" />
+              </View>
+              <ThemedText style={styles.brandName}>YUMBITES</ThemedText>
+              <ThemedText style={styles.brandDot}> · FOOD, FEEL GOOD</ThemedText>
+            </View>
+            <View style={styles.heroContent}>
+              <View style={styles.heroCopy}>
+                <ThemedText style={styles.eyebrow}>YOUR TABLE IS WAITING</ThemedText>
+                <ThemedText style={styles.title}>Good food.{'\n'}Great to see you.</ThemedText>
+                <ThemedText style={styles.subtitle}>Sign in and let the cravings begin.</ThemedText>
+              </View>
+              <View style={styles.plate}>
+                <ThemedText style={styles.foodEmoji}>🍜</ThemedText>
+              </View>
+            </View>
+            <View style={styles.heroCircle} />
+          </LinearGradient>
 
           {/* Form */}
           <View style={styles.formContainer}>
+            <View style={styles.formHeading}>
+              <ThemedText style={styles.formTitle}>Welcome back</ThemedText>
+              <ThemedText style={styles.formSubtitle}>Pick up right where you left off.</ThemedText>
+            </View>
             <Controller
               control={control}
               name="email"
@@ -84,7 +102,7 @@ const Login = () => {
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoComplete="email"
-                  // leftIcon={<Ionicons name="mail-outline" size={20} color={Colors.primary} />}
+                  leftIcon={<Ionicons name="mail-outline" size={18} color="#A18F83" />}
                 />
               )}
             />
@@ -112,16 +130,20 @@ const Login = () => {
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoComplete="password"
-                  // leftIcon={<Ionicons name="lock-closed-outline" size={20} color={Colors.primary} />}
-                  // rightIcon={
-                  //   <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  //     <Ionicons 
-                  //       name={showPassword ? 'eye-off-outline' : 'eye-outline'} 
-                  //       size={20} 
-                  //       color={Colors.primary} 
-                  //     />
-                  //   </TouchableOpacity>
-                  // }
+                  leftIcon={<Ionicons name="lock-closed-outline" size={18} color="#A18F83" />}
+                  rightIcon={
+                    <TouchableOpacity
+                      onPress={() => setShowPassword(!showPassword)}
+                      accessibilityLabel={showPassword ? 'Hide password' : 'Show password'}
+                      hitSlop={8}
+                    >
+                      <Ionicons
+                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={19}
+                        color="#A18F83"
+                      />
+                    </TouchableOpacity>
+                  }
                 />
               )}
             />
@@ -134,7 +156,7 @@ const Login = () => {
               <ThemedText style={styles.forgotPasswordText}>Forgot Password?</ThemedText>
             </TouchableOpacity>
 
-            <Spacer height={25} />
+            <Spacer height={20} />
 
             {/* Login Button */}
             <Button
@@ -144,7 +166,7 @@ const Login = () => {
               disabled={isSubmitting}
             />
 
-            <Spacer height={30} />
+            <Spacer height={22} />
 
             {/* Divider */}
             <View style={styles.dividerContainer}>
@@ -153,7 +175,7 @@ const Login = () => {
               <View style={styles.divider} />
             </View>
 
-            <Spacer height={30} />
+            <Spacer height={22} />
 
             {/* Social Login */}
             <View style={styles.socialContainer}>
@@ -174,7 +196,7 @@ const Login = () => {
               />
             </View>
 
-            <Spacer height={40} />
+            <Spacer height={28} />
 
             {/* Register Link */}
             <View style={styles.registerContainer}>

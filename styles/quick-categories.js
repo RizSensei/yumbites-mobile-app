@@ -2,45 +2,73 @@ import { StyleSheet } from "react-native";
 
 export const quickCategoriesStyles = StyleSheet.create({
   section: {
-    paddingVertical: 16,
+    paddingTop: 24,
+    paddingBottom: 6,
+  },
+  headingRow: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    paddingHorizontal: 22,
+    marginBottom: 14,
+  },
+  eyebrow: {
+    color: "#A69588",
+    fontSize: 8,
+    letterSpacing: 1.1,
+    fontWeight: "800",
+    marginBottom: 4,
   },
   heading: {
-    fontSize: 18,
-    fontWeight: "700",
-    marginBottom: 12,
-    paddingHorizontal: 16,
+    color: "#30251F",
+    fontSize: 20,
+    fontWeight: "800",
+    letterSpacing: -0.4,
+  },
+  seeAll: {
+    color: "#E65D40",
+    fontSize: 12,
+    fontWeight: "800",
+    paddingBottom: 3,
   },
   categoriesWrapper: {
     flexDirection: "row",
-    gap: 12,
-    paddingHorizontal: 16,
-    paddingBottom: 8,
+    gap: 14,
+    paddingHorizontal: 22,
+    paddingBottom: 10,
   },
   categoryItem: {
     alignItems: "center",
     justifyContent: "center",
+    minWidth: 66,
+  },
+  categoryPressed: {
+    opacity: 0.72,
+    transform: [{ scale: 0.97 }],
   },
   iconBox: {
-    width: 64,
-    height: 64,
-    backgroundColor: "#f2f2f2",
-    borderRadius: 16,
+    width: 62,
+    height: 62,
+    borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 3, // shadow for Android
-    shadowColor: "#000", // iOS shadow
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
   },
+  iconBoxes: [
+    { backgroundColor: "#FFE9D9" },
+    { backgroundColor: "#FFF0C9" },
+    { backgroundColor: "#DBF2E9" },
+    { backgroundColor: "#F4E5F7" },
+    { backgroundColor: "#E2EDFF" },
+    { backgroundColor: "#FFE3E2" },
+  ],
   iconText: {
-    fontSize: 32,
-    fontWeight: "bold"
+    fontSize: 29,
   },
   categoryLabel: {
-    fontSize: 12,
-    fontWeight: "500",
-    marginTop: 6,
+    color: "#55483F",
+    fontSize: 11,
+    fontWeight: "700",
+    marginTop: 8,
     textAlign: "center",
   },
 });

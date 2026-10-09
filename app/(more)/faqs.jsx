@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+﻿import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRef, useState } from "react";
 import {
@@ -210,7 +210,7 @@ const Faqs = () => {
           <View style={styles.faqQuestionContent}>
             <View style={styles.questionNumber}>
               <LinearGradient
-                colors={["#6849a7", "#987dc9"]}
+                colors={["#F45B43", "#F7B46C"]}
                 style={styles.numberGradient}
               >
                 <Text style={styles.numberText}>{index + 1}</Text>
@@ -225,7 +225,7 @@ const Faqs = () => {
           <Ionicons
             name={isExpanded ? "chevron-up" : "chevron-down"}
             size={24}
-            color={isExpanded ? "#6849a7" : "#666"}
+            color={isExpanded ? "#D94A34" : "#85776F"}
           />
         </TouchableOpacity>
 
@@ -252,14 +252,14 @@ const Faqs = () => {
                     "help"
                   }
                   size={12}
-                  color="#6849a7"
+                  color="#D94A34"
                 />
                 <Text style={styles.categoryTagText}>
                   {categories.find((c) => c.id === faq.category)?.label}
                 </Text>
               </View>
               <TouchableOpacity style={styles.helpfulButton}>
-                <Ionicons name="thumbs-up-outline" size={16} color="#6849a7" />
+                <Ionicons name="thumbs-up-outline" size={16} color="#D94A34" />
                 <Text style={styles.helpfulText}>Helpful?</Text>
               </TouchableOpacity>
             </View>
@@ -276,7 +276,7 @@ const Faqs = () => {
         style={[styles.animatedHeader, { opacity: headerOpacity }]}
       >
         <LinearGradient
-          colors={["#6849a7", "#533a85", "#291d42"]}
+          colors={["#F45B43", "#D94A34", "#A9362B"]}
           style={StyleSheet.absoluteFillObject}
         />
       </Animated.View>
@@ -284,7 +284,7 @@ const Faqs = () => {
       {/* Header */}
       <View style={styles.header}>
         <LinearGradient
-          colors={["#6849a7", "#533a85"]}
+          colors={["#F45B43", "#D94A34"]}
           style={styles.headerGradient}
         >
           <View style={styles.headerContent}>
@@ -330,7 +330,7 @@ const Faqs = () => {
           <Ionicons
             name="help-circle"
             size={20}
-            color={activeTab === "faq" ? "#fff" : "#6849a7"}
+            color={activeTab === "faq" ? "#fff" : "#D94A34"}
           />
           <Text
             style={[
@@ -349,7 +349,7 @@ const Faqs = () => {
           <Ionicons
             name="chatbubble"
             size={20}
-            color={activeTab === "contact" ? "#fff" : "#6849a7"}
+            color={activeTab === "contact" ? "#fff" : "#D94A34"}
           />
           <Text
             style={[
@@ -385,7 +385,7 @@ const Faqs = () => {
                     name={category.icon}
                     size={18}
                     color={
-                      selectedCategory === category.id ? "#fff" : "#6849a7"
+                      selectedCategory === category.id ? "#fff" : "#D94A34"
                     }
                   />
                   <Text
@@ -413,7 +413,7 @@ const Faqs = () => {
                   style={styles.controlButton}
                   onPress={collapseAll}
                 >
-                  <Ionicons name="chevron-up" size={16} color="#6849a7" />
+                  <Ionicons name="chevron-up" size={16} color="#D94A34" />
                   <Text style={styles.controlButtonText}>Collapse All</Text>
                 </TouchableOpacity>
               ) : (
@@ -421,7 +421,7 @@ const Faqs = () => {
                   style={styles.controlButton}
                   onPress={expandAll}
                 >
-                  <Ionicons name="chevron-down" size={16} color="#6849a7" />
+                  <Ionicons name="chevron-down" size={16} color="#D94A34" />
                   <Text style={styles.controlButtonText}>Expand All</Text>
                 </TouchableOpacity>
               )}
@@ -470,7 +470,7 @@ const Faqs = () => {
                 <Ionicons
                   name="chatbubble-ellipses"
                   size={40}
-                  color="#6849a7"
+                  color="#D94A34"
                 />
                 <Text style={styles.contactCtaTitle}>Still need help?</Text>
                 <Text style={styles.contactCtaText}>
@@ -501,7 +501,7 @@ const Faqs = () => {
             style={styles.contactCard}
           >
             <View style={styles.contactHeader}>
-              <Ionicons name="headset" size={48} color="#6849a7" />
+              <Ionicons name="headset" size={48} color="#D94A34" />
               <Text style={styles.contactTitle}>Get in Touch</Text>
               <Text style={styles.contactSubtitle}>
                 We're here to help! Choose your preferred contact method
@@ -512,7 +512,7 @@ const Faqs = () => {
               {/* Live Chat */}
               <TouchableOpacity style={styles.contactMethod}>
                 <LinearGradient
-                  colors={["#6849a7", "#987dc9"]}
+                  colors={["#F45B43", "#F7B46C"]}
                   style={styles.methodIconContainer}
                 >
                   <Ionicons name="chatbubbles" size={24} color="#fff" />
@@ -530,7 +530,7 @@ const Faqs = () => {
               {/* Email */}
               <TouchableOpacity style={styles.contactMethod}>
                 <LinearGradient
-                  colors={["#6849a7", "#987dc9"]}
+                  colors={["#F45B43", "#F7B46C"]}
                   style={styles.methodIconContainer}
                 >
                   <Ionicons name="mail" size={24} color="#fff" />
@@ -550,7 +550,7 @@ const Faqs = () => {
               {/* Phone */}
               <TouchableOpacity style={styles.contactMethod}>
                 <LinearGradient
-                  colors={["#6849a7", "#987dc9"]}
+                  colors={["#F45B43", "#F7B46C"]}
                   style={styles.methodIconContainer}
                 >
                   <Ionicons name="call" size={24} color="#fff" />
@@ -593,7 +593,7 @@ const Faqs = () => {
                     <Ionicons
                       name="arrow-forward-circle"
                       size={16}
-                      color="#6849a7"
+                      color="#D94A34"
                     />
                   </TouchableOpacity>
                 ))}
@@ -618,3 +618,4 @@ const Faqs = () => {
 };
 
 export default Faqs;
+

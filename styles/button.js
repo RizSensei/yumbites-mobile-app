@@ -3,31 +3,43 @@ import { Colors } from '../constants/Colors';
 
 export const buttonStyles = StyleSheet.create({
   button: {
-    height: 50,
-    borderRadius: 8,
+    minHeight: 54,
+    borderRadius: 17,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
   },
   primaryButton: {
-    backgroundColor: Colors.primary,
+    backgroundColor: '#E85D40',
+    shadowColor: '#B74631',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 9,
+    elevation: 3,
   },
   secondaryButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#FFFCF9',
     borderWidth: 1,
-    borderColor: Colors.primary,
+    borderColor: '#F0E4D9',
+    shadowOpacity: 0,
   },
   disabled: {
     opacity: 0.5,
   },
   text: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '800',
   },
   primaryText: {
     color: '#fff',
   },
   secondaryText: {
-    color: Colors.primary,
+    color: '#30251F',
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
   },
 });

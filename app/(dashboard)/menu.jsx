@@ -8,7 +8,6 @@ import {
   Image,
   Modal,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -106,19 +105,6 @@ const Menu = () => {
     setSortBy('popular');
   };
 
-  // Header animation
-  const headerOpacity = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  });
-
-  const headerTranslateY = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [-50, 0],
-    extrapolate: 'clamp',
-  });
-
   const addToCart = async (item) => {
     try {
       await addToCartMutation.mutateAsync({ dishId: item.id, quantity: 1 });
@@ -134,27 +120,49 @@ const Menu = () => {
       activeOpacity={0.9}
       onPress={() => router.push(`/menu/${item.id}`)}
     >
-      <Image source={{ uri: item.image }} style={styles.menuItemImage} />
+      <View style={styles.menuImageFrame}>
+        <Image source={{ uri: item.image }} style={styles.menuItemImage} />
+        <LinearGradient
+          colors={['rgba(40, 24, 18, 0)', 'rgba(40, 24, 18, 0.58)']}
+          style={styles.imageShade}
+        />
+        <View style={styles.imageTopRow}>
+          {item.rating >= 4.8 && (
+            <View style={styles.popularBadge}>
+              <Ionicons name="flame" size={11} color="#9B431D" />
+              <Text style={styles.popularBadgeText}>POPULAR</Text>
+            </View>
+          )}
+          {item.isVegetarian && (
+            <View style={styles.vegetarianBadge}>
+              <Ionicons name="leaf" size={13} color="#397B4E" />
+            </View>
+          )}
+        </View>
+        <View style={styles.imageMeta}>
+          <View style={styles.imageRating}>
+            <Ionicons name="star" size={12} color="#FFD36A" />
+            <Text style={styles.imageRatingText}>{item.rating.toFixed(1)}</Text>
+          </View>
+          <View style={styles.imageTime}>
+            <Ionicons name="time-outline" size={12} color="#FFFFFF" />
+            <Text style={styles.imageTimeText}>{item.prepTime}</Text>
+          </View>
+        </View>
+      </View>
       <View style={styles.menuItemContent}>
         <View style={styles.menuItemHeader}>
           <Text style={styles.menuItemName} numberOfLines={1}>{item.name}</Text>
-          {item.isVegetarian && (
-            <View style={styles.vegetarianBadge}>
-              <Ionicons name="leaf" size={12} color="#4CAF50" />
-            </View>
-          )}
         </View>
         <Text style={styles.menuItemDescription} numberOfLines={2}>
           {item.description}
         </Text>
         
         <View style={styles.menuItemMeta}>
-          <View style={styles.ratingContainer}>
-            <Ionicons name="star" size={14} color="#FFD700" />
-            <Text style={styles.ratingText}>{item.rating}</Text>
-            <Text style={styles.prepTime}> • {item.prepTime}</Text>
+          <View style={styles.categoryTag}>
+            <Text style={styles.categoryTagText}>{item.category}</Text>
           </View>
-          <Text style={styles.categoryTag}>{item.category}</Text>
+          <Text style={styles.freshLabel}>MADE FRESH</Text>
         </View>
         
         <View style={styles.menuItemFooter}>
@@ -173,40 +181,57 @@ const Menu = () => {
 
   return (
     <>
-    <ThemedView safeArea={true}>
-      {/* Animated Header Background */}
-      <Animated.View 
-        style={[
-          styles.animatedHeader,
-          { opacity: headerOpacity, transform: [{ translateY: headerTranslateY }] }
-        ]}
+    <ThemedView safeArea={true} style={styles.container}>
+      <LinearGradient
+        colors={['#F45B43', '#E94E39', '#B83C30']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.menuHero}
       >
-        <LinearGradient
-          colors={['#6849a7', '#533a85', '#291d42']}
-          style={StyleSheet.absoluteFillObject}
-        />
-      </Animated.View>
+        <View style={styles.heroCopy}>
+          <View style={styles.heroEyebrow}>
+            <Ionicons name="sparkles" size={13} color="#FFE4A8" />
+            <Text style={styles.heroEyebrowText}>MADE FRESH, JUST FOR YOU</Text>
+          </View>
+          <Text style={styles.heroTitle}>Find your{'\n'}happy plate.</Text>
+          <View style={styles.deliveryPill}>
+            <Ionicons name="time-outline" size={14} color="#FFFFFF" />
+            <Text style={styles.deliveryPillText}>Fresh picks · 20-35 min</Text>
+          </View>
+        </View>
+        <View style={styles.heroFoodArt}>
+          <View style={styles.heroPlate}>
+            <Text style={styles.heroFoodEmoji}>🍜</Text>
+          </View>
+          <View style={styles.heroSparkleTop}>
+            <Ionicons name="sparkles" size={18} color="#FFE4A8" />
+          </View>
+          <View style={styles.heroSparkleBottom}>
+            <Ionicons name="star" size={13} color="#FFE4A8" />
+          </View>
+        </View>
+      </LinearGradient>
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#6849a7" />
+          <Ionicons name="arrow-back" size={22} color="#D94A34" />
         </TouchableOpacity>
         
         <View style={styles.searchInputContainer}>
-          <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
+          <Ionicons name="search" size={19} color="#D94A34" style={styles.searchIcon} />
           <TextInput
             ref={searchRef}
             style={styles.searchInput}
-            placeholder="Search dishes, restaurants..."
-            placeholderTextColor="#999"
+            placeholder="Find a dish you love..."
+            placeholderTextColor="#A3978F"
             value={searchQuery}
             onChangeText={setSearchQuery}
             returnKeyType="search"
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={20} color="#999" />
+              <Ionicons name="close-circle" size={20} color="#A3978F" />
             </TouchableOpacity>
           )}
         </View>
@@ -214,8 +239,9 @@ const Menu = () => {
         <TouchableOpacity 
           style={styles.filterButton}
           onPress={() => setShowFilterModal(true)}
+          accessibilityLabel="Filter menu"
         >
-          <Ionicons name="options-outline" size={24} color="#6849a7" />
+          <Ionicons name="options-outline" size={22} color="#D94A34" />
           {activeFilters.length > 0 && (
             <View style={styles.filterBadge}>
               <Text style={styles.filterBadgeText}>{activeFilters.length}</Text>
@@ -226,28 +252,45 @@ const Menu = () => {
 
       {/* Categories Scroll */}
       <View style={styles.categoriesContainer}>
+        <View style={styles.categoryHeading}>
+          <Text style={styles.categoryHeadingTitle}>What are you craving?</Text>
+          <Text style={styles.categoryHeadingNote}>PICK YOUR MOOD</Text>
+        </View>
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoriesScroll}
         >
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category}
-              style={[
-                styles.categoryButton,
-                selectedCategory === category && styles.categoryButtonActive
-              ]}
-              onPress={() => setSelectedCategory(category)}
-            >
-              <Text style={[
-                styles.categoryButtonText,
-                selectedCategory === category && styles.categoryButtonTextActive
-              ]}>
-                {category}
-              </Text>
-            </TouchableOpacity>
-          ))}
+          {categories.map((category) => {
+            const categoryIcons = {
+              All: '✨',
+              Pizza: '🍕',
+              Burgers: '🍔',
+              Drinks: '🥤',
+              Desserts: '🍰',
+              Salads: '🥗',
+              Asian: '🍜',
+            };
+            const selected = selectedCategory === category;
+            return (
+              <TouchableOpacity
+                key={category}
+                style={[
+                  styles.categoryButton,
+                  selected && styles.categoryButtonActive,
+                ]}
+                onPress={() => setSelectedCategory(category)}
+              >
+                <Text style={styles.categoryEmoji}>{categoryIcons[category] || '🍽️'}</Text>
+                <Text style={[
+                  styles.categoryButtonText,
+                  selected && styles.categoryButtonTextActive,
+                ]}>
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
       </View>
 
@@ -259,10 +302,10 @@ const Menu = () => {
               const filter = filters.find(f => f.id === filterId);
               return (
                 <View key={filterId} style={styles.activeFilterTag}>
-                  <Ionicons name={filter.icon} size={14} color="#6849a7" />
+                  <Ionicons name={filter.icon} size={14} color="#D94A34" />
                   <Text style={styles.activeFilterText}>{filter.label}</Text>
                   <TouchableOpacity onPress={() => toggleFilter(filterId)}>
-                    <Ionicons name="close" size={14} color="#6849a7" />
+                    <Ionicons name="close" size={14} color="#D94A34" />
                   </TouchableOpacity>
                 </View>
               );
@@ -276,19 +319,21 @@ const Menu = () => {
 
       {/* Results Count and Sort */}
       <View style={styles.resultsHeader}>
-        <Text style={styles.resultsCount}>
-          {sortedItems.length} {sortedItems.length === 1 ? 'item' : 'items'} found
-        </Text>
+        <View>
+          <Text style={styles.resultsKicker}>THE GOOD STUFF</Text>
+          <Text style={styles.resultsCount}>
+            {sortedItems.length} {sortedItems.length === 1 ? 'dish' : 'dishes'} to love
+          </Text>
+        </View>
         <TouchableOpacity 
           style={styles.sortButton}
           onPress={() => {
-            // Implement sort modal or dropdown
             const sorts = ['popular', 'price-low', 'price-high', 'rating', 'prep-time'];
             const currentIndex = sorts.indexOf(sortBy);
             setSortBy(sorts[(currentIndex + 1) % sorts.length]);
           }}
         >
-          <Ionicons name="swap-vertical" size={16} color="#6849a7" />
+          <Ionicons name="swap-vertical" size={16} color="#D94A34" />
           <Text style={styles.sortText}>
             {sortBy === 'popular' && 'Popular'}
             {sortBy === 'price-low' && 'Price: Low to High'}
@@ -313,11 +358,13 @@ const Menu = () => {
         scrollEventThrottle={16}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <Ionicons name="fast-food-outline" size={80} color="#ccc" />
-            <Text style={styles.emptyText}>{dishesLoading ? 'Loading menu...' : 'No items found'}</Text>
-            <Text style={styles.emptySubtext}>Try adjusting your search or filters</Text>
+            <View style={styles.emptyIcon}>
+              <Ionicons name="restaurant-outline" size={38} color="#D94A34" />
+            </View>
+            <Text style={styles.emptyText}>{dishesLoading ? 'Setting the table...' : 'No dishes found'}</Text>
+            <Text style={styles.emptySubtext}>Try another craving or clear your filters</Text>
             <TouchableOpacity style={styles.emptyButton} onPress={clearAllFilters}>
-              <Text style={styles.emptyButtonText}>Clear All Filters</Text>
+              <Text style={styles.emptyButtonText}>Show me everything</Text>
             </TouchableOpacity>
           </View>
         }
@@ -333,17 +380,17 @@ const Menu = () => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <LinearGradient
-              colors={['#6849a7', '#533a85']}
+              colors={['#F45B43', '#E94E39']}
               style={styles.modalHeader}
             >
-              <Text style={styles.modalTitle}>Filters</Text>
+              <Text style={styles.modalTitle}>Make it your kind of meal</Text>
               <TouchableOpacity onPress={() => setShowFilterModal(false)}>
                 <Ionicons name="close" size={24} color="#fff" />
               </TouchableOpacity>
             </LinearGradient>
             
             <ScrollView style={styles.modalBody}>
-              <Text style={styles.filterSectionTitle}>Dietary</Text>
+              <Text style={styles.filterSectionTitle}>Dietary & discovery</Text>
               {filters.map(filter => (
                 <TouchableOpacity
                   key={filter.id}
@@ -356,7 +403,7 @@ const Menu = () => {
                   <Ionicons 
                     name={filter.icon} 
                     size={20} 
-                    color={activeFilters.includes(filter.id) ? '#6849a7' : '#666'} 
+                    color={activeFilters.includes(filter.id) ? '#D94A34' : '#666'}
                   />
                   <Text style={[
                     styles.filterOptionText,
@@ -365,12 +412,12 @@ const Menu = () => {
                     {filter.label}
                   </Text>
                   {activeFilters.includes(filter.id) && (
-                    <Ionicons name="checkmark-circle" size={20} color="#6849a7" />
+                    <Ionicons name="checkmark-circle" size={20} color="#D94A34" />
                   )}
                 </TouchableOpacity>
               ))}
               
-              <Text style={styles.filterSectionTitle}>Sort By</Text>
+              <Text style={styles.filterSectionTitle}>Sort your menu</Text>
               {['popular', 'price-low', 'price-high', 'rating', 'prep-time'].map(sortOption => (
                 <TouchableOpacity
                   key={sortOption}
@@ -393,13 +440,13 @@ const Menu = () => {
             
             <View style={styles.modalFooter}>
               <TouchableOpacity style={styles.modalButtonSecondary} onPress={clearAllFilters}>
-                <Text style={styles.modalButtonSecondaryText}>Reset All</Text>
+                <Text style={styles.modalButtonSecondaryText}>Reset all</Text>
               </TouchableOpacity>
               <TouchableOpacity 
                 style={styles.modalButtonPrimary}
                 onPress={() => setShowFilterModal(false)}
               >
-                <Text style={styles.modalButtonPrimaryText}>Apply Filters</Text>
+                <Text style={styles.modalButtonPrimaryText}>Show my dishes</Text>
               </TouchableOpacity>
             </View>
           </View>

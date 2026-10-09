@@ -6,6 +6,7 @@ import {
   Text,
   View
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import MenuCard from "../../general/MenuCard";
 import { popularSectionStyles as styles } from "../../../styles/popular-section";
 import { useDishes } from "../../../hooks/useDishes";
@@ -57,13 +58,16 @@ const PopularSection = () => {
     <View style={styles.section}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>Popular Now 🔥</Text>
-
+        <View>
+          <Text style={styles.eyebrow}>THE CROWD-PLEASERS</Text>
+          <Text style={styles.title}>Popular right now</Text>
+        </View>
         <Pressable
           onPress={() => router.push("/menu")}
           style={styles.seeAllBtn}
+          accessibilityLabel="See the full menu"
         >
-          <Text style={styles.seeAllText}>See All</Text>
+          <Ionicons name="arrow-forward" size={17} color="#E65D40" />
         </Pressable>
       </View>
 

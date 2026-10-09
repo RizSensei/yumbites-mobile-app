@@ -1,6 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
+﻿import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
+  Alert,
   Image,
   Modal,
   RefreshControl,
@@ -362,7 +363,7 @@ const MyReviews = () => {
       <View style={styles.header}>
         <ThemedText style={styles.headerTitle}>My Reviews</ThemedText>
         <ThemedText style={styles.headerSubtitle}>
-          {reviews.length} review{reviews.length !== 1 ? 's' : ''} • {averageRating} avg rating
+          {reviews.length} review{reviews.length !== 1 ? 's' : ''} â€¢ {averageRating} avg rating
         </ThemedText>
       </View>
 
@@ -669,8 +670,5 @@ const MyReviews = () => {
     </ThemedView>
   );
 };
-
-// Add missing import
-import { Alert } from 'react-native';
 
 export default MyReviews;

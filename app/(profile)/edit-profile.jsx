@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import Button from '../../components/Button';
 import { Spacer, ThemedText, ThemedView } from '../../components/theme';
-import { Colors } from '../../constants/Colors';
 import { editProfileStyles as styles } from '../../styles/edit-profile';
 import { useUpdateProfileMutation } from '../../hooks/useAccountQueries';
 
@@ -127,7 +126,7 @@ const EditProfile = () => {
                     fieldToEdit === 'address' ? 'Address' : 'Bio'}
             </ThemedText>
             <TouchableOpacity onPress={() => setFieldToEdit(null)}>
-              <Ionicons name="close" size={24} color={Colors.primary} />
+              <Ionicons name="close" size={24} color="#D94A34" />
             </TouchableOpacity>
           </View>
 
@@ -169,14 +168,21 @@ const EditProfile = () => {
       >
         {/* Header */}
         <View style={styles.header}>
-          <ThemedText style={styles.headerTitle}>Edit Profile</ThemedText>
-          <ThemedText style={styles.headerSubtitle}>Update your personal information</ThemedText>
+          <View style={styles.headerEyebrow}>
+            <Ionicons name="sparkles" size={14} color="#D94A34" />
+            <ThemedText style={styles.eyebrowText}>YOUR LITTLE CORNER</ThemedText>
+          </View>
+          <ThemedText style={styles.headerTitle}>Make it{`\n`}feel like you.</ThemedText>
+          <ThemedText style={styles.headerSubtitle}>A few details make every order feel a little more personal.</ThemedText>
         </View>
 
         <Spacer height={20} />
 
         {/* Profile Picture Section */}
         <View style={styles.profileImageSection}>
+          <View style={styles.profileAccent}>
+            <Ionicons name="restaurant" size={18} color="#F7C976" />
+          </View>
           <View style={styles.profileImageContainer}>
             <Image
               source={{ uri: profileImage }}
@@ -192,19 +198,25 @@ const EditProfile = () => {
           
           <Spacer height={10} />
           
-          <TouchableOpacity onPress={pickImage}>
-            <ThemedText style={styles.changePhotoText}>Change Photo</ThemedText>
+          <ThemedText style={styles.profileName}>{formData.name}</ThemedText>
+          <TouchableOpacity style={styles.changePhotoPill} onPress={pickImage}>
+            <Ionicons name="camera-outline" size={15} color="#FFD2B8" />
+            <ThemedText style={styles.changePhotoText}>Change photo</ThemedText>
           </TouchableOpacity>
         </View>
 
         <Spacer height={30} />
 
         {/* Profile Information */}
+        <View style={styles.sectionHeading}>
+          <ThemedText style={styles.sectionTitle}>The essentials</ThemedText>
+          <ThemedText style={styles.sectionHint}>Tap any detail to edit</ThemedText>
+        </View>
         <View style={styles.infoContainer}>
           {/* Name Field */}
           <View style={styles.fieldContainer}>
             <View style={styles.fieldHeader}>
-              <Ionicons name="person-outline" size={20} color={Colors.primary} />
+              <Ionicons name="person-outline" size={20} color="#D94A34" />
               <ThemedText style={styles.fieldLabel}>Full Name</ThemedText>
             </View>
             <TouchableOpacity 
@@ -224,7 +236,7 @@ const EditProfile = () => {
           {/* Email Field */}
           <View style={styles.fieldContainer}>
             <View style={styles.fieldHeader}>
-              <Ionicons name="mail-outline" size={20} color={Colors.primary} />
+              <Ionicons name="mail-outline" size={20} color="#D94A34" />
               <ThemedText style={styles.fieldLabel}>Email Address</ThemedText>
             </View>
             <TouchableOpacity 
@@ -244,7 +256,7 @@ const EditProfile = () => {
           {/* Phone Field */}
           <View style={styles.fieldContainer}>
             <View style={styles.fieldHeader}>
-              <Ionicons name="call-outline" size={20} color={Colors.primary} />
+              <Ionicons name="call-outline" size={20} color="#D94A34" />
               <ThemedText style={styles.fieldLabel}>Phone Number</ThemedText>
             </View>
             <TouchableOpacity 
@@ -264,7 +276,7 @@ const EditProfile = () => {
           {/* Address Field */}
           <View style={styles.fieldContainer}>
             <View style={styles.fieldHeader}>
-              <Ionicons name="location-outline" size={20} color={Colors.primary} />
+              <Ionicons name="location-outline" size={20} color="#D94A34" />
               <ThemedText style={styles.fieldLabel}>Delivery Address</ThemedText>
             </View>
             <TouchableOpacity 
@@ -284,7 +296,7 @@ const EditProfile = () => {
           {/* Bio Field */}
           <View style={styles.fieldContainer}>
             <View style={styles.fieldHeader}>
-              <Ionicons name="document-text-outline" size={20} color={Colors.primary} />
+              <Ionicons name="document-text-outline" size={20} color="#D94A34" />
               <ThemedText style={styles.fieldLabel}>Bio</ThemedText>
             </View>
             <TouchableOpacity 

@@ -2,49 +2,52 @@ import { StyleSheet } from "react-native";
 
 export const popularSectionStyles = StyleSheet.create({
   section: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
+    paddingHorizontal: 22,
+    paddingTop: 22,
+    paddingBottom: 6,
   },
 
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 14,
+  },
+
+  eyebrow: {
+    color: "#A69588",
+    fontSize: 9,
+    letterSpacing: 1.2,
+    fontWeight: "800",
+    marginBottom: 4,
   },
 
   title: {
-    fontSize: 22,
-    fontWeight: "700",
+    color: "#30251F",
+    fontSize: 21,
+    fontWeight: "800",
+    letterSpacing: -0.5,
   },
 
   seeAllBtn: {
-    flexDirection: "row",
+    width: 38,
+    height: 38,
     alignItems: "center",
-  },
-
-  seeAllText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#ff6b00",
-  },
-
-  chevron: {
-    fontSize: 16,
-    marginLeft: 4,
-    color: "#ff6b00",
+    justifyContent: "center",
+    borderRadius: 19,
+    backgroundColor: "#FFEAE1",
   },
 
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around",
-    marginHorizontal: -6,
+    justifyContent: "space-between",
+    marginHorizontal: -4,
   },
 
   cardContainer: {
-    width: "48%", // 2 columns
-    marginBottom: 16,
-    paddingHorizontal: 6,
+    width: "50%",
+    marginBottom: 13,
+    paddingHorizontal: 4,
   },
 });

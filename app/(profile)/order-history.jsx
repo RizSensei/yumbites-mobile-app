@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import {
   Alert,
+  Image,
   RefreshControl,
   ScrollView,
   TouchableOpacity,
@@ -231,7 +232,7 @@ const OrderHistory = () => {
       case 'cancelled':
         return { name: 'close-circle', color: '#FF6B6B' };
       default:
-        return { name: 'receipt', color: '#6849a7' };
+        return { name: 'receipt', color: '#D94A34' };
     }
   };
 
@@ -424,6 +425,34 @@ const OrderHistory = () => {
 
   return (
     <ThemedView safeArea={true} style={styles.container}>
+
+      <View style={styles.restaurantHeader}>
+        <View style={styles.restaurantImageFrame}>
+          <Image
+            source={{ uri: restaurantInfo.image }}
+            style={styles.restaurantImage}
+          />
+        </View>
+        <View style={styles.restaurantInfo}>
+          <ThemedText style={styles.restaurantName}>{restaurantInfo.name}</ThemedText>
+          <View style={styles.restaurantDetails}>
+            <View style={styles.restaurantRating}>
+              <Ionicons name="star" size={14} color="#FFC857" />
+              <ThemedText style={styles.restaurantRatingText}>{restaurantInfo.rating}</ThemedText>
+            </View>
+            <ThemedText style={styles.restaurantCuisine}>{restaurantInfo.cuisine}</ThemedText>
+          </View>
+          <View style={styles.restaurantDelivery}>
+            <Ionicons name="bicycle-outline" size={15} color="#FFC857" />
+            <ThemedText style={styles.restaurantDeliveryText}>
+              {restaurantInfo.deliveryTime} delivery
+            </ThemedText>
+          </View>
+        </View>
+        <View style={styles.restaurantBadge}>
+          <Ionicons name="flame" size={18} color="#E85D40" />
+        </View>
+      </View>
 
       <ThemedText style={styles.sectionTitle}>Your Orders</ThemedText>
       <ThemedText style={styles.sectionSubtitle}>Past orders from {restaurantInfo.name}</ThemedText>

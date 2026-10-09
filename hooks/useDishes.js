@@ -1,7 +1,7 @@
 import { dishesApi } from '../services/api';
 import { useQuery } from '@tanstack/react-query';
-
-const responseData = (response) => response?.data?.data ?? response?.data;
+import { mockDishes } from '../data/mockData';
+import { fetchArrayWithMockFallback } from './queryFallback';
 
 export const dishQueryKeys = {
     all: ['dishes'],
@@ -13,6 +13,13 @@ export const dishQueryKeys = {
 export const useDishes = () => {
     return useQuery({
         queryKey: dishQueryKeys.lists(),
-        queryFn: async () => responseData(await dishesApi.getAll()),
+        queryFn: () => fetchArrayWithMockFallback({
+            label: 'dishes',
+            fetcher: () => dishesApi.getAll(),
+            fallback: () => mockDishes.map((dish) => ({ ...dish })),
+            keys: ['dishes', 'items'],
+        }),
+        initialData: () => mockDishes.map((dish) => ({ ...dish })),
+        initialDataUpdatedAt: 0,
     });
 };

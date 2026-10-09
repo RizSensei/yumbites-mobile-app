@@ -1,61 +1,52 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { ThemedText, ThemedView } from "../../theme";
+import { router } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { heroSectionStyles as styles } from "../../../styles/hero-section";
 
 const HeroSection = () => {
   return (
-    <ThemedView style={styles.container}>
-
-      {/* Gradient Overlay */}
+    <View style={styles.container}>
       <LinearGradient
-        colors={["#6849a7", "#b8a6db", "#6849a7"]}
+        colors={["#F78355", "#F05B42", "#D9443D"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFillObject}
       />
-
-      <ScrollView contentContainerStyle={styles.content}>
+      <View style={styles.orbit} />
+      <View style={styles.content}>
         <View style={styles.textContainer}>
-          {/* Badge */}
           <View style={styles.badge}>
-            <ThemedText style={styles.badgeText}>
-              🍕 Free delivery on orders $25+
-            </ThemedText>
+            <Ionicons name="flash" size={13} color="#FFE6A8" />
+            <Text style={styles.badgeText}>FRESH OFF THE MENU</Text>
           </View>
-
-          {/* Heading */}
-          <ThemedText style={styles.heading}>
-            Delicious Food{"\n"}Delivered Fast
-          </ThemedText>
-
-          {/* Description */}
-          <ThemedText style={styles.description}>
-            Fresh ingredients, amazing flavors. Order your favorites from the
-            best local restaurants.
-          </ThemedText>
-
-          {/* Button */}
+          <Text style={styles.heading}>Your next{"\n"}favorite bite.</Text>
+          <Text style={styles.description}>
+            Big flavor, made fresh and on its way to you.
+          </Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Menu")}
-            activeOpacity={0.8}
+            onPress={() => router.push("/menu")}
+            activeOpacity={0.85}
           >
-            <ThemedText style={styles.buttonText}>Order Now</ThemedText>
-            <Ionicons name="arrow-forward" size={20} color="#000" style={{ marginLeft: 8 }} />
+            <Text style={styles.buttonText}>Explore the menu</Text>
+            <Ionicons name="arrow-forward" size={17} color="#D94B3D" />
           </TouchableOpacity>
         </View>
-      </ScrollView>
-
-      {/* Blur Circle */}
-      <ThemedView style={styles.blurCircle} />
-    </ThemedView>
+        <View style={styles.foodArt}>
+          <View style={styles.plate}>
+            <Text style={styles.foodEmoji}>🍜</Text>
+          </View>
+          <View style={styles.sparkle}>
+            <Text style={styles.sparkleText}>✦</Text>
+          </View>
+          <View style={styles.foodTag}>
+            <Ionicons name="star" size={12} color="#FFB53E" />
+            <Text style={styles.foodTagText}>made with love</Text>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 };
 

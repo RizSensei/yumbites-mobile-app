@@ -45,7 +45,19 @@ const QuickCategories = () => {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.heading}>Categories</Text>
+      <View style={styles.headingRow}>
+        <View>
+          <Text style={styles.eyebrow}>A LITTLE SOMETHING FOR EVERY CRAVING</Text>
+          <Text style={styles.heading}>What sounds good?</Text>
+        </View>
+        <Pressable
+          onPress={() => router.push("/menu")}
+          hitSlop={8}
+          accessibilityLabel="See all menu categories"
+        >
+          <Text style={styles.seeAll}>See all</Text>
+        </Pressable>
+      </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.categoriesWrapper}>
@@ -53,9 +65,9 @@ const QuickCategories = () => {
             <FadeInItem key={category.id} index={index}>
               <Pressable
                 onPress={() => router.push("/menu")}
-                style={styles.categoryItem}
+                style={({ pressed }) => [styles.categoryItem, pressed && styles.categoryPressed]}
               >
-                <View style={styles.iconBox}>
+                <View style={[styles.iconBox, styles.iconBoxes[index % styles.iconBoxes.length]]}>
                   <Text style={styles.iconText}>{category.icon}</Text>
                 </View>
                 <Text style={styles.categoryLabel}>{category.name}</Text>

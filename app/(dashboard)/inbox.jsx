@@ -1,13 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import {
   RefreshControl,
   SectionList,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { ThemedText, ThemedView } from '../../components/theme';
-import { Colors } from '../../constants/Colors';
 import { inboxStyles as styles } from '../../styles/inbox';
 
 // Mock data for notifications
@@ -98,7 +99,7 @@ const notificationsData = [
         message: 'Your order #12342 has been successfully placed.',
         time: '3 days ago',
         icon: 'receipt',
-        color: '#6849a7',
+        color: '#D94A34',
         read: true,
         orderNumber: '#12342',
         status: 'placed',
@@ -116,7 +117,7 @@ const notificationsData = [
         message: 'Your password has been successfully updated.',
         time: '3 days ago',
         icon: 'lock-closed',
-        color: '#6849a7',
+        color: '#D94A34',
         read: true,
         action: 'Secure Account',
       },
@@ -219,7 +220,7 @@ const Inbox = () => {
                   item.status === 'delivered' ? '#06D6A020' :
                   item.status === 'delivering' ? '#FFD16620' :
                   item.status === 'preparing' ? '#118AB220' :
-                  '#6849a720'
+                  '#F45B4320'
                 }
               ]}>
                 <ThemedText style={[
@@ -228,7 +229,7 @@ const Inbox = () => {
                     item.status === 'delivered' ? '#06D6A0' :
                     item.status === 'delivering' ? '#FFD166' :
                     item.status === 'preparing' ? '#118AB2' :
-                    Colors.primary
+                    '#D94A34'
                   }
                 ]}>
                   {item.status}
@@ -264,37 +265,67 @@ const Inbox = () => {
             style={styles.headerButton} 
             onPress={markAllAsRead}
           >
-            <Ionicons name="checkmark-done-outline" size={24} color={Colors.primary} />
+            <Ionicons name="checkmark-done-outline" size={24} color="#D94A34" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerButton}>
-            <Ionicons name="ellipsis-horizontal" size={24} color={Colors.primary} />
+            <Ionicons name="ellipsis-horizontal" size={24} color="#D94A34" />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Unread Count Badge */}
       {getUnreadCount() > 0 && (
-        <View style={styles.unreadCountBadge}>
-          <ThemedText style={styles.unreadCountText}>
-            {getUnreadCount()} unread notification{getUnreadCount() > 1 ? 's' : ''}
-          </ThemedText>
-        </View>
+        <LinearGradient
+          colors={['#F45B43', '#E94E39', '#B83C30']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.inboxHero}
+        >
+          <View style={styles.inboxHeroCopy}>
+            <View style={styles.inboxHeroEyebrow}>
+              <Ionicons name="sparkles" size={13} color="#FFE4A8" />
+              <ThemedText style={styles.inboxHeroEyebrowText}>YOUR YUMBITES MOMENTS</ThemedText>
+            </View>
+            <ThemedText style={styles.inboxHeroTitle}>
+              {getUnreadCount() > 0 ? 'You’ve got' : 'You’re all'}{'\n'}
+              {getUnreadCount() > 0 ? 'good news.' : 'all caught up.'}
+            </ThemedText>
+            <ThemedText style={styles.inboxHeroCaption}>
+              {getUnreadCount() > 0
+                ? `${getUnreadCount()} fresh update${getUnreadCount() === 1 ? '' : 's'} to check out`
+                : 'We’ll save a seat for your next update'}
+            </ThemedText>
+          </View>
+          <View style={styles.inboxHeroArt}>
+            <View style={styles.inboxHeroPlate}>
+              <Ionicons name="notifications" size={31} color="#D94A34" />
+            </View>
+            <View style={styles.inboxHeroSparkle}>
+              <Ionicons name="sparkles" size={17} color="#FFE4A8" />
+            </View>
+            {getUnreadCount() > 0 && (
+              <View style={styles.inboxHeroCount}>
+                <ThemedText style={styles.inboxHeroCountText}>{getUnreadCount()}</ThemedText>
+              </View>
+            )}
+          </View>
+        </LinearGradient>
       )}
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
+        <Ionicons name="search" size={20} color="#D94A34" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search notifications..."
-          placeholderTextColor="#999"
+          placeholderTextColor="#A3978F"
           value={searchQuery}
           onChangeText={setSearchQuery}
           returnKeyType="search"
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <Ionicons name="close-circle" size={20} color="#999" />
+            <Ionicons name="close-circle" size={20} color="#A3978F" />
           </TouchableOpacity>
         )}
       </View>
@@ -311,8 +342,8 @@ const Inbox = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[Colors.primary]}
-            tintColor={Colors.primary}
+            colors={['#D94A34']}
+            tintColor="#D94A34"
           />
         }
         ListEmptyComponent={
@@ -329,8 +360,5 @@ const Inbox = () => {
     </ThemedView>
   );
 };
-
-// Add missing import
-import { TouchableOpacity } from 'react-native';
 
 export default Inbox;
